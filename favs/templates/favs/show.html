@@ -1,0 +1,33 @@
+{% extends 'favs/layout.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block title %}
+show
+{% endblock %}
+
+{% block main %}
+<p>USER ID: {{ user_id }}</p>
+
+<div class="widget_container">
+    <ul class="widget-area js-grid">
+	{% for tweet in tweets %}
+	<li class="js-grid-item">{% include 'favs/_tweet.html' %}</li>
+	{% endfor %}
+    </ul>
+</div>
+
+<script>
+ 
+ $(window).on('load', function(){
+     setTimeout(function(){
+	 $('.js-grid').masonry({
+	     columnWidth: 160,
+	     fitWidth: true,
+	 });
+     }, 500);
+ });
+</script>
+	
+{% endblock %}

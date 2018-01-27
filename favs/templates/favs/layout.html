@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="ja">
+    <head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="{% static 'favs/css/cssreset-min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'favs/css/style.css' %}">
+	<script src="{% static 'favs/js/jquery-3.2.1.slim.min.js' %}"></script>
+	<script src="{% static 'favs/js/masonry.pkgd.min.js' %}"></script>
+	{% block head %}{% endblock %}
+	<title>{% block title %}{% endblock %}| FavManager</title>
+    </head>
+
+    <body>
+	{% include 'favs/_header.html' %}
+
+	<main id="main">
+	    {% block main %}{% endblock %}
+	</main>
+
+	{% include 'favs/_footer.html' %}
+    </body>    
+</html>
