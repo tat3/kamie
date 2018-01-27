@@ -25,7 +25,7 @@ SECRET_KEY = '4hgw1nblx%dbh0nc3e%&jz6wpnjh!=irr&55+^cx6f(a5$=rtm'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['app']
+ALLOWED_HOSTS = ['app', 'sleepy-sierra-36875.herokuapp.com']
 
 
 # Application definition
