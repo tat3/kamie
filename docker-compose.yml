@@ -7,11 +7,12 @@ services:
       - .:/code
     expose:
       - 8000
-    environment:
-      - tw_ck
-      - tw_cs
-      - tw_at
-      - tw_as
+    env_file: .env
+    # environment:
+    #   - tw_ck
+    #   - tw_cs
+    #   - tw_at
+    #   - tw_as
   nginx:
     build: ./nginx
     ports:

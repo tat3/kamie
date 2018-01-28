@@ -20,7 +20,8 @@ def index(request):
         }
         print(user_id)
         return HttpResponse(template.render(context, request))
-        
+
+    #return HttpResponseRedirect('login')
     template = loader.get_template('favs/index.html')
     context = {}
     return HttpResponse(template.render(context, request))
@@ -42,6 +43,10 @@ def login(request):
     twitter = utils.TwitterClient()
     url = twitter.issue_request_url()
     return HttpResponseRedirect(url)
+
+def logout(request):
+    request.session.pop('user_id')
+    return HttpResponseRedirect('/')
 
 def callback(request):
     twitter = utils.TwitterClient()

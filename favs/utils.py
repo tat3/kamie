@@ -38,7 +38,7 @@ class TwitterClient:
     def favlist(self, user_id):
         params = {
             'user_id': user_id,
-            'count': 10,
+            'count': 100,
         }
         res = self.session.get(self.urls['favlist'], params=params)
         if res.status_code != 200: return []
@@ -94,7 +94,6 @@ class TwitterClient:
         return tweets_add
 
     def issue_request_url(self):
-        url_cb = 'http://localhost:8080/callback/'
         session_auth = OAuth1Session(self.CK, client_secret=self.CS)
         res = session_auth.fetch_request_token(self.urls['request_token'])
 
