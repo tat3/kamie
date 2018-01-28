@@ -1,5 +1,7 @@
 version: '3'
 services:
+  db:
+    image: postgres
   app:
     build: .
     command: python3 manage.py runserver 0.0.0.0:8000
@@ -8,11 +10,8 @@ services:
     expose:
       - 8000
     env_file: .env
-    # environment:
-    #   - tw_ck
-    #   - tw_cs
-    #   - tw_at
-    #   - tw_as
+    depends_on:
+      - db
   nginx:
     build: ./nginx
     ports:

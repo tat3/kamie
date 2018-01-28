@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.template import loader
 from django.urls import reverse
 
@@ -16,16 +16,15 @@ def redirect_app_root():
 def index(request):
     if 'user_id' in request.session:
         template = loader.get_template('favs/show.html')
-    
-        twitter = utils.TwitterClient()
-        #user_id = '1212759744'
+
         user_id = request.session['user_id']
+        twitter = utils.TwitterClient(user_id=user_id)
+        #user_id = '1212759744'
         tweets = twitter.add_htmls_embedded(twitter.favlist(user_id))
         context = {
             'user_id': user_id,
             'tweets': tweets,
         }
-        print(user_id)
         return HttpResponse(template.render(context, request))
 
     #return HttpResponseRedirect('login')
@@ -39,7 +38,11 @@ def show(request, screen_name):
     twitter = utils.TwitterClient()
     #user_id = '1212759744'
     user_id = twitter.user_id_from_screen_name(screen_name)
+    if user_id == '':
+        return HttpResponseNotFound('<h1>User not found.</h1>')
     tweets = twitter.add_htmls_embedded(twitter.favlist(user_id))
+    tweets = [ item for item in tweets if 'media' in item['entities'] ]
+    print(tweets[0]['entities']['media'])
     context = {
         'user_id': user_id,
         'tweets': tweets,
@@ -52,7 +55,8 @@ def login(request):
     return HttpResponseRedirect(url)
 
 def logout(request):
-    request.session.pop('user_id')
+    if 'user_id' in request.session:
+        request.session.pop('user_id')
     #return HttpResponseRedirect(reverse('favs:index'))
     return redirect_app_root()
 

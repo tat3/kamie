@@ -1,5 +1,14 @@
-<h1>Fav Manager</h1>
+{% extends 'favs/layout.html' %}
 
+{% block head %}
+{% endblock %}
+
+{% block title %}
+Top
+{% endblock %}
+
+{% block main %}
 <p>Top Page</p>
 
 <a href="{% url 'favs:login' %}">ログイン</a>
+{% endblock %}

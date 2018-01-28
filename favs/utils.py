@@ -12,11 +12,18 @@ def merge_two_dicts(a, b):
 
 class TwitterClient:
 
-    def __init__(self):
+    def __init__(self, user_id=''):
+        if user_id != '':
+            user = User.objects.filter(user_id=user_id)[0]
+            self.AT = user.access_token
+            self.AS = user.access_token_secret
+        else:
+            self.AT = os.environ['tw_at']
+            self.AS = os.environ['tw_as']
+
         self.CK = os.environ['tw_ck']
         self.CS = os.environ['tw_cs']
-        self.AT = os.environ['tw_at']
-        self.AS = os.environ['tw_as']
+
         self.session = OAuth1Session(self.CK, self.CS, self.AT, self.AS)
 
         self.urls = {
@@ -38,7 +45,7 @@ class TwitterClient:
     def favlist(self, user_id):
         params = {
             'user_id': user_id,
-            'count': 100,
+            'count': 200,
         }
         res = self.session.get(self.urls['favlist'], params=params)
         if res.status_code != 200: return []
@@ -64,7 +71,8 @@ class TwitterClient:
 
     def user_id_from_screen_name(self, screen_name):
         user = self.user_from_screen_name(screen_name)
-        return user['id_str']
+        print(user)
+        return user['id_str'] if 'id_str' in user else ''
 
     def html_embedded(self, tweet, q):
         url = 'https://twitter.com/{screen_name}/status/{tweet_id}'.format(screen_name=tweet['user']['screen_name'], tweet_id=tweet['id_str'])
@@ -97,27 +105,30 @@ class TwitterClient:
         session_auth = OAuth1Session(self.CK, client_secret=self.CS)
         res = session_auth.fetch_request_token(self.urls['request_token'])
 
-        user = User(oauth_token=res['oauth_token'], oauth_token_secret=res['oauth_token_secret'])
+        user = User(oauth_token=res['oauth_token'], oauth_secret=res['oauth_token_secret'])
         user.save()
 
-        print(res['oauth_token'], res['oauth_token_secret'])
-        return '{base}?oauth_token={token}&oauth_verifier={verifier}'.format(base=self.urls['authorize'], token=res['oauth_token'], verifier=res['oauth_token_secret'])
+        return session_auth.authorization_url(self.urls['authorize'])
 
     def register_access_token(self, request):
         oauth_token = request.GET['oauth_token']
         oauth_verifier = request.GET['oauth_verifier']
 
         user = User.objects.get(oauth_token=oauth_token)
-        oauth_token_secret = user.oauth_token_secret
+        oauth_secret = user.oauth_secret
 
-        session_auth = OAuth1Session(self.CK, client_secret=self.CS, resource_owner_key=oauth_token, resource_owner_secret=oauth_token_secret, verifier=oauth_verifier)
+        session_auth = OAuth1Session(self.CK, client_secret=self.CS, resource_owner_key=oauth_token, resource_owner_secret=oauth_secret, verifier=oauth_verifier)
         res = session_auth.fetch_access_token(self.urls['access_token'])
         user.access_token = res['oauth_token']
-        user.access_token_secret = res['oauth_token_secret']
+        user.access_secret = res['oauth_token_secret']
 
-        session_user = OAuth1Session(self.CK, self.CS, user.access_token, user.access_token_secret)
+        session_user = OAuth1Session(self.CK, self.CS, user.access_token, user.access_secret)
         res = session_user.get(self.urls['account_verified'], params={})
-        user.user_id = json.loads(res.text)['id_str']
+        user_id = json.loads(res.text)['id_str']
+        users_old = User.objects.filter(user_id=user_id)
+        if len(users_old) >= 1:
+            users_old.delete()
+        user.user_id = user_id
         user.save()
         return user.user_id
         

@@ -1,0 +1,13 @@
+{% if 'media_url_https' in tweet.entities.media %}
+<li class="widget js-grid-item">
+    <img class="widget_img" src="{{ tweet.entities.media.media_url_https }}">
+</li>
+{% endif %}
+{% for media in tweet.extended_entities.media %}
+<li class="widget js-grid-item">
+    <img class="widget_img" src="{{ media.media_url_https }}">
+</li>
+{% endfor %}
+
+
+
