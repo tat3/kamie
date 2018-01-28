@@ -1,10 +1,17 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
+from django.urls import reverse
 
 from . import utils
 
 # Create your views here.
+
+def root(request):
+    return redirect_app_root()
+
+def redirect_app_root():
+    return HttpResponseRedirect(reverse('favs:index'))
 
 def index(request):
     if 'user_id' in request.session:
@@ -46,10 +53,11 @@ def login(request):
 
 def logout(request):
     request.session.pop('user_id')
-    return HttpResponseRedirect('/')
+    #return HttpResponseRedirect(reverse('favs:index'))
+    return redirect_app_root()
 
 def callback(request):
     twitter = utils.TwitterClient()
     user_id = twitter.register_access_token(request)
     request.session['user_id'] = user_id
-    return HttpResponseRedirect('/')
+    return redirect_app_root()
