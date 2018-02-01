@@ -3,3 +3,4 @@ psycopg2
 requests_oauthlib
 gunicorn
 whitenoise
+python-social-auth[django]

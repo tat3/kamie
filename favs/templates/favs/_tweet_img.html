@@ -1,13 +1,14 @@
+{% if 'media' in tweet.entities %}
+
 {% if 'media_url_https' in tweet.entities.media %}
-<li class="widget js-grid-item">
-    <img class="widget_img" src="{{ tweet.entities.media.media_url_https }}">
-</li>
+{% include 'favs/_each_tweet.html' with url=tweet.entities.media.media_url_https %}
 {% endif %}
+
 {% for media in tweet.extended_entities.media %}
-<li class="widget js-grid-item">
-    <img class="widget_img" src="{{ media.media_url_https }}">
-</li>
+{% if 'media_url_https' in media %}
+{% include 'favs/_each_tweet.html' with url=media.media_url_https %}
+{% endif %}
 {% endfor %}
 
-
+{% endif %}
 
