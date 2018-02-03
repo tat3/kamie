@@ -24,19 +24,21 @@ SECRET_KEY = '4hgw1nblx%dbh0nc3e%&jz6wpnjh!=irr&55+^cx6f(a5$=rtm'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['app', 'sleepy-sierra-36875.herokuapp.com']
+ALLOWED_HOSTS = ['localhost', 'app', 'sleepy-sierra-36875.herokuapp.com']
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'favs.apps.FavsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'twitterManager.apps.TwittermanagerConfig',
+    'favs.apps.FavsConfig',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +57,9 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join('twitterManager', 'templates')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -63,6 +67,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -137,3 +143,14 @@ STATICFILES_DIRS = (
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.twitter.TwitterOAuth',
+    'django.contrib.auth.backends.ModelBackend',
+]
+SOCIAL_AUTH_TWITTER_KEY = os.environ['tw_ck']
+SOCIAL_AUTH_TWITTER_SECRET = os.environ['tw_cs']
+# SOCIAL_AUTH_COMPLETE_URL_NAME = 'top_page'
+# SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'http://localhost:8080/twitterManager/top'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/twitterManager/top'
+USE_X_FORWARDED_HOST = True
