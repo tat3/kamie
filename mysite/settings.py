@@ -152,5 +152,5 @@ SOCIAL_AUTH_TWITTER_KEY = os.environ['tw_ck']
 SOCIAL_AUTH_TWITTER_SECRET = os.environ['tw_cs']
 # SOCIAL_AUTH_COMPLETE_URL_NAME = 'top_page'
 # SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'http://localhost:8080/twitterManager/top'
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/twitterManager/top'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/auth/complete'
 USE_X_FORWARDED_HOST = True

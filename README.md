@@ -2,15 +2,9 @@
 
 
 #python social auth(PSA)について
-https://python-social-auth.readthedocs.io/en/latest/developer_intro.html
+https://qiita.com/bakira/items/175b16e7e5372e007920
 を参考
 
 #方針
 
-基本的な機能を開発
-
-認証を追加
-
-データを保存、開くたびに新しいものを読み込む
-新規時は20くらい。際限なく読み込む
 

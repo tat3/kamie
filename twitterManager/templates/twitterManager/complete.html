@@ -5,6 +5,12 @@
 <body>
   <div>
     <h1>会員トップ</h1>
+    <h2>request.user</h2>
+    <div>
+      <p>ID: {{ userid }}</p>
+      <p>User Name: {{ username}}</p>
+      <p>First Name: {{ first_name}}</p>
+    </div>
     <h2>{{ user }}</h2>
     <div>
       <p>UserId:{{ user.access_token.user_id }}</p>
@@ -12,10 +18,10 @@
       <p>OAuthToken:{{ user.access_token.oauth_token }}</p>
       <p>ScreenName:{{ user.access_token.screen_name }}</p>
     </div>
-    <h3>hoge:{{ hoge }}</h3>
     <p>
-      <a href="/twitterManager/logout"><button type="button" >ログアウト</button></a>
+      <a href="/auth/logout"><button type="button" >ログアウト</button></a>
     </p>
+    <a href="{% url 'favs:index' %}">いいねを見る</a>
   </div>
 </body>
 </html>
