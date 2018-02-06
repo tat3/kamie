@@ -9,4 +9,6 @@ app_name = 'favs'
 urlpatterns = [
     path('', views.index, name='index'),
     path('<str:screen_name>/show/', views.show, name='show'),
+    path('contact/', views.contact, name="contact"),
+    path('about/', views.about, name="about"),
 ]

@@ -5,6 +5,17 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1">
 
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-108933557-2"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-108933557-2');
+        </script>
+
+
 		<link rel="stylesheet" type="text/css" href="{% static 'favs/css/cssreset-min.css' %}">
 		<link rel="stylesheet" type="text/css" href="{% static 'favs/css/style.css' %}">
 
@@ -28,8 +39,11 @@
         <!-- Font Awesome -->
         <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
 
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
 		{% block head %}{% endblock %}
-		<title>{% block title %}{% endblock %}| FavManager</title>
+		<title>{% block title %}{% endblock %} | FavManager</title>
 
     </head>
 

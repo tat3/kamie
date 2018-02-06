@@ -37,6 +37,7 @@ def index(request):
         twitter = utils.TwitterClient(user)
 
         user_id = user['user_id']
+
         tweets = twitter.favlist(user_id)
         tweets = twitter.add_htmls_embedded(tweets)
         # tweets = [item for item in tweets if 'media' in item['entities']]
@@ -64,6 +65,7 @@ def show(request, screen_name):
     # user_id = '1212759744'
     user_id = twitter.user_id_from_screen_name(screen_name)
     if user_id == '':
+        print(twitter.AT, twitter.AS)
         return HttpResponseNotFound('<h1>User not found.</h1>')
     tweets = twitter.add_htmls_embedded(twitter.favlist(user_id))
     tweets = [item for item in tweets if 'media' in item['entities']]
@@ -72,5 +74,23 @@ def show(request, screen_name):
         'user': request.user,
         'user_id': user_id,
         'tweets': tweets,
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def contact(request):
+    u"""Contact usに表示される内容."""
+    template = loader.get_template(template_path('contact.html'))
+    context = {
+        'user': request.user,
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def about(request):
+    u"""Contact usに表示される内容."""
+    template = loader.get_template(template_path('about.html'))
+    context = {
+        'user': request.user,
     }
     return HttpResponse(template.render(context, request))

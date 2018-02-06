@@ -1,11 +1,8 @@
 {% extends 'favs/layout.html' %}
 
-{% block head %}
-{% endblock %}
+{% block head %}{% endblock %}
 
-{% block title %}
-Show
-{% endblock %}
+{% block title %}Show{% endblock %}
 
 {% block main %}
 {# <p>USER ID: {{ user_id }}</p> #}
@@ -13,7 +10,7 @@ Show
 <div class="widget_area">
     <ul class="widgets js-grid">
 	{% for tweet in tweets %}
-	{# {% include 'favs/_tweet.html' %} #}
+	{#{% include 'favs/_tweet.html' %}#}
 	{% include 'favs/_tweet_img.html' %}
 	{% endfor %}
     </ul>    

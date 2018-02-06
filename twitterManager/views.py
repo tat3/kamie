@@ -57,5 +57,7 @@ def logout_view(request):
     u"""ログアウトする."""
     logout(request)
     template = loader.get_template(template_path('logout.html'))
-    context = {}
+    context = {
+        'user': request.user,
+    }
     return HttpResponse(template.render(context, request))
