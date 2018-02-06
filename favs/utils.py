@@ -56,11 +56,12 @@ class TwitterClient:
             return []
         return json.loads(res.text)
 
-    def favlist(self, user_id):
+    def favlist(self, user_id, page=1):
         u"""対称ユーザーのいいね欄を表示."""
         params = {
             'user_id': user_id,
-            'count': 20,
+            'count': 200,
+            'page': page,
         }
         res = self.session.get(self.urls['favlist'], params=params)
         if res.status_code != 200:
@@ -73,7 +74,6 @@ class TwitterClient:
             'screen_name': screen_name,
         }
         res = self.session.get(self.urls['user'], params=params)
-        print(res.text)
         if res.status_code != 200:
             return {}
         return json.loads(res.text)

@@ -7,7 +7,7 @@ from django.http import (
     HttpResponse, HttpResponseRedirect, HttpResponseNotFound,
 )
 from django.template import loader
-# from django.urls import reverse
+from django.urls import reverse
 from social_django.models import UserSocialAuth
 from . import utils
 
@@ -27,7 +27,7 @@ def redirect_favs_root():
     return HttpResponseRedirect(template_path('index.html'))
 
 
-def index(request):
+def index(request, page=1):
     u"""トップページもしくはユーザーのいいねを表示."""
     if not request.user.is_anonymous:
         template = loader.get_template(template_path('show.html'))
@@ -45,6 +45,9 @@ def index(request):
             'user': request.user,
             'user_id': user_id,
             'tweets': tweets,
+            'next_url': reverse(
+                'favs:index_page',
+                kwargs={'page': page + 1}),
         }
         return HttpResponse(template.render(context, request))
     # loginを強要
@@ -57,7 +60,7 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 
-def show(request, screen_name):
+def show(request, screen_name, page=1):
     u"""指定したユーザーのいいねを表示."""
     template = loader.get_template(template_path('show.html'))
 
@@ -67,13 +70,17 @@ def show(request, screen_name):
     if user_id == '':
         print(twitter.AT, twitter.AS)
         return HttpResponseNotFound('<h1>User not found.</h1>')
-    tweets = twitter.add_htmls_embedded(twitter.favlist(user_id))
+    tweets = twitter.add_htmls_embedded(twitter.favlist(user_id, page))
     tweets = [item for item in tweets if 'media' in item['entities']]
     # print(tweets[0]['entities']['media'])
     context = {
         'user': request.user,
         'user_id': user_id,
         'tweets': tweets,
+        'next_url': reverse(
+            'favs:show_page',
+            kwargs={'screen_name': screen_name,
+                    'page': page + 1}),
     }
     return HttpResponse(template.render(context, request))
 

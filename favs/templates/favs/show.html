@@ -10,12 +10,15 @@
 <div class="widget_area">
     <ul class="widgets js-grid">
 	{% for tweet in tweets %}
-	{#{% include 'favs/_tweet.html' %}#}
-	{% include 'favs/_tweet_img.html' %}
+	{% include 'favs/_tweet.html' %}
+	{#{% include 'favs/_tweet_img.html' %}#}
 	{% endfor %}
-    </ul>    
+    </ul>
 </div>
 
+<ul class="pager">
+    <li class="next text-center"><a href="{{ next_url }}">Next</a></li>
+</ul>
 <script> 
  $(window).on('load', function(){
      setTimeout(function(){
