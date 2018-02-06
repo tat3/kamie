@@ -17,12 +17,15 @@ from django.contrib import admin
 from django.urls import path, include
 # from django.conf.urls import include
 # from favs.views import root
+# from django.views.generic import RedirectView
 
 
 urlpatterns = [
-    # path('', root),
-    path('favs/', include('favs.urls')),
+    # path('', include('favs.urls')),
+    path('favs/', include('favs.urls', namespace='favs')),
     path('admin/', admin.site.urls),
-    # path('twitterManager/', include('twitterManager.urls')),
-    path('auth/', include('twitterManager.urls')),
+    path('auth/', include('twitterManager.urls', namespace='twitterManager')),
+    path('social-auth/',
+         include('social_django.urls', namespace='social-auth')
+         ),
 ]

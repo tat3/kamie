@@ -16,21 +16,22 @@ from django.http import (
     HttpResponse,
 )
 from django.template import loader
+from django.urls import reverse
 
 app_name = 'twitterManager'
 
 
 def template_path(name):
-    u"""テンプレートファイル名からにapp_nameを追加."""
+    u"""テンプレートファイル名にapp_nameを追加."""
     return os.path.join(app_name, name)
 
 
 @login_required
 def complete_view(request):
-    u"""login後にcallbackされたページ."""
-    user = UserSocialAuth.objects.get(user_id=request.user.id)
-    return HttpResponseRedirect('/favs/')
+    u"""login後にcallbackされるページ."""
+    return HttpResponseRedirect(reverse('favs:index'))
 
+    user = UserSocialAuth.objects.get(user_id=request.user.id)
     page_dic = {
         'user': user,
         'userid': request.user.id,
@@ -42,6 +43,7 @@ def complete_view(request):
 
 def login_view(request):
     u"""ログインページを表示するだけ."""
+    logout(request)
     template = loader.get_template(template_path('login.html'))
     context = {}
     return HttpResponse(template.render(context, request))

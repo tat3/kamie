@@ -2,32 +2,26 @@
 <!DOCTYPE html>
 <html lang="ja">
     <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width,initial-scale=1">
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1">
 
-	<link rel="stylesheet" type="text/css" href="{% static 'favs/css/cssreset-min.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'favs/css/style.css' %}">
-	<!-- <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.18.1/build/cssreset/cssreset-min.css"> -->
+		<link rel="stylesheet" type="text/css" href="{% static 'favs/css/cssreset-min.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'favs/css/style.css' %}">
 
-	<script
-	    src="https://code.jquery.com/jquery-3.3.1.min.js"
-	    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-	    crossorigin="anonymous"></script>
-	<script src="https://unpkg.com/masonry-layout@4.2.1/dist/masonry.pkgd.min.js"></script>
-	<!-- <script src="{% static 'favs/js/jquery-3.2.1.slim.min.js' %}"></script>
-	     <script src="{% static 'favs/js/masonry.pkgd.min.js' %}"></script> -->
-	{% block head %}{% endblock %}
-	<title>{% block title %}{% endblock %}| FavManager</title>
+		<script src="{% static 'favs/js/jquery-3.2.1.slim.min.js' %}"></script>
+		<script src="{% static 'favs/js/masonry.pkgd.min.js' %}"></script>
+		{% block head %}{% endblock %}
+		<title>{% block title %}{% endblock %}| FavManager</title>
 
     </head>
 
     <body>
-	{% include 'favs/_header.html' %}
+		{% include 'favs/_header.html' %}
 
-	<main id="main">
-	    {% block main %}{% endblock %}
-	</main>
+		<main id="main">
+		    {% block main %}{% endblock %}
+		</main>
 
-	{% include 'favs/_footer.html' %}
+		{% include 'favs/_footer.html' %}
     </body>    
 </html>

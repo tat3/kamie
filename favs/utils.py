@@ -9,7 +9,7 @@ from requests_oauthlib import OAuth1Session
 
 
 def merge_two_dicts(a, b):
-    """Merge two dicts."""
+    u"""２つの辞書オブジェクトを合体させる."""
     c = a.copy()
     c.update(b)
     return c
@@ -18,14 +18,18 @@ def merge_two_dicts(a, b):
 class TwitterClient:
     u"""クライアントを提供."""
 
-    def __init__(self, access_token="", access_token_secret=""):
-        u"""Access tokenがあればそれを使い、なければ自分のものを使ってインスタンスを作成."""
-        if access_token != "" and access_token_secret != "":
-            self.AT = access_token
-            self.AS = access_token_secret
-        else:
+    def __init__(self, user={}):
+        u"""
+        Consumer keyとaccess tokenからクライアントを生成する.
+
+        ユーザーがログインしていればその人のトークンを使い、なければ管理者のものを使う.
+        """
+        if user == {}:
             self.AT = os.environ['tw_at']
             self.AS = os.environ['tw_as']
+        else:
+            self.AT = user['oauth_token']
+            self.AS = user['oauth_token_secret']
 
         self.CK = os.environ['tw_ck']
         self.CS = os.environ['tw_cs']

@@ -1,14 +1,11 @@
 {% extends 'favs/layout.html' %}
 
-{% block head %}
-{% endblock %}
+{% block head %}{% endblock %}
 
-{% block title %}
-Top
-{% endblock %}
+{% block title %}Top{% endblock %}
 
 {% block main %}
 <p>Top Page</p>
 
-<a href="/auth/login">ログイン</a>
+<a href="{% url 'twitterManager:login' %}">ログイン</a>
 {% endblock %}
