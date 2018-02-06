@@ -1,5 +1,30 @@
-<header id="header">
-    {#<h1><a href="{% url 'favs:index' %}">Fav Manager</a></h1>#}
-    <h1>Fav Manager</h1>
-    <a href="{% url 'twitterManager:logout' %}">ログアウト</a>
-</header>
+<nav class="navbar navbar-expand-lg navbar-dark" id="navbar">
+
+    <button type="button" class="navbar-toggler white" data-toggle="collapse" data-target="#Navber" aria-controls="Navber" aria-expanded="false" aria-label="ナビゲーションの切替">
+        <i class="fas fa-bars menu-icon"></i>
+    </button>
+    <a class="navbar-brand white" href="{% url 'favs:index' %}"><h1 class="text-large">Fav Manager</h1></a>
+
+    <div class="collapse navbar-collapse" id="Navber">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a href="#" class="nav-link white"><p class="text-normal">{{ user.username }}@{{ user.first_name }}</p></a>
+            </li>
+            <li class="nav-item">
+                {% if user.is_anonymous %}
+                    <a class="nav-link white" href="{% include 'favs/_login_url.html' %}"><p class="text-normal">Login</p></a>
+                {% else %}
+                    <a class="nav-link white" href="{% url 'twitterManager:logout' %}"><p class="text-normal">Logout</p></a>
+                {% endif %}
+            </li>
+            <li class="nav-item">
+                <a class="nav-link white" href="#"><p class="text-normal">About us</p></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link white" href="#"><p class="text-normal">Contact us</p></a>
+            </li>
+
+        </ul>
+    </div>
+</nav>
+

@@ -42,7 +42,11 @@ def complete_view(request):
 
 
 def login_view(request):
-    u"""ログインページを表示するだけ."""
+    u"""
+    ログインページを表示するだけ.
+
+    現在はトップページから直接ログインするので使わない.
+    """
     logout(request)
     template = loader.get_template(template_path('login.html'))
     context = {}
@@ -50,7 +54,7 @@ def login_view(request):
 
 
 def logout_view(request):
-    u"""access_tokenを破棄."""
+    u"""ログアウトする."""
     logout(request)
     template = loader.get_template(template_path('logout.html'))
     context = {}

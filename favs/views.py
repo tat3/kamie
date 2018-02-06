@@ -7,7 +7,7 @@ from django.http import (
     HttpResponse, HttpResponseRedirect, HttpResponseNotFound,
 )
 from django.template import loader
-from django.urls import reverse
+# from django.urls import reverse
 from social_django.models import UserSocialAuth
 from . import utils
 
@@ -27,11 +27,6 @@ def redirect_favs_root():
     return HttpResponseRedirect(template_path('index.html'))
 
 
-def root():
-    u"""projectのルートにアクセスされたときfavsのルートにリダイレクトする."""
-    return redirect_favs_root()
-
-
 def index(request):
     u"""トップページもしくはユーザーのいいねを表示."""
     if not request.user.is_anonymous:
@@ -46,15 +41,18 @@ def index(request):
         tweets = twitter.add_htmls_embedded(tweets)
         # tweets = [item for item in tweets if 'media' in item['entities']]
         context = {
+            'user': request.user,
             'user_id': user_id,
             'tweets': tweets,
         }
         return HttpResponse(template.render(context, request))
     # loginを強要
-    return HttpResponseRedirect(reverse('twitterManager:login'))
+    # return HttpResponseRedirect(reverse('twitterManager:login'))
 
     template = loader.get_template(template_path('index.html'))
-    context = {}
+    context = {
+        'user': request.user,
+    }
     return HttpResponse(template.render(context, request))
 
 
@@ -71,6 +69,7 @@ def show(request, screen_name):
     tweets = [item for item in tweets if 'media' in item['entities']]
     # print(tweets[0]['entities']['media'])
     context = {
+        'user': request.user,
         'user_id': user_id,
         'tweets': tweets,
     }

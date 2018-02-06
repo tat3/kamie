@@ -5,3 +5,4 @@ gunicorn
 whitenoise
 social-auth-app-django
 dj-database-url
+django-bootstrap4

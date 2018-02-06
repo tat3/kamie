@@ -7,5 +7,5 @@
 {% block main %}
 <p>Top Page</p>
 
-<a href="{% url 'twitterManager:login' %}">ログイン</a>
+<a href="{% include 'favs/_login_url.html' %}">ログイン</a>
 {% endblock %}

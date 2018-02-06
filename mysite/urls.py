@@ -14,15 +14,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include  # , reverse
 # from django.conf.urls import include
 # from favs.views import root
 # from django.views.generic import RedirectView
-
+# from django.http import HttpResponseRedirect
 
 urlpatterns = [
-    # path('', include('favs.urls')),
-    path('favs/', include('favs.urls', namespace='favs')),
+    # path('', HttpResponseRedirect('favs/')),
+    path('', include('favs.urls', namespace='favs')),
     path('admin/', admin.site.urls),
     path('auth/', include('twitterManager.urls', namespace='twitterManager')),
     path('social-auth/',

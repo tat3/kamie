@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'twitterManager.apps.TwittermanagerConfig',
     'favs.apps.FavsConfig',
     'social_django',
+    'bootstrap4',
 ]
 
 MIDDLEWARE = [
