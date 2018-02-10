@@ -5,10 +5,10 @@ services:
   app:
     build: .
     command: python3 manage.py runserver 0.0.0.0:8000
-    volumes:
-      - .:/code
-    expose:
-      - 8000
+    # volumes:
+    #   - .:/code
+    # expose:
+    #   - 8000
     env_file: .env
     depends_on:
       - db
@@ -16,8 +16,8 @@ services:
     build: ./nginx
     ports:
       - 80:80
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/staticfiles:/usr/share/nginx/html/static
+    # volumes:
+    #   - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    #   - ./nginx/staticfiles:/usr/share/nginx/html/static
     links:
       - app
