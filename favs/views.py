@@ -41,13 +41,24 @@ def index(request, page=1):
         tweets = twitter.favlist(user_id)
         tweets = twitter.add_htmls_embedded(tweets)
         # tweets = [item for item in tweets if 'media' in item['entities']]
+
+        def page_url(page):
+            return reverse('favs:index_page', kwargs={'page': max(page, 0)})
+
+        urls = [{'page': page - 1, 'url': page_url(page - 1), 'name': 'Prev'}]
+        for i in range(-2, 3):
+            pagei = page + i
+            urls = urls + [
+                {'page': pagei, 'url': page_url(pagei), 'name': pagei}]
+        urls = urls + [
+            {'page': page + 1, 'url': page_url(page + 1), 'name': 'Next'}]
+
         context = {
             'user': request.user,
             'user_id': user_id,
             'tweets': tweets,
-            'next_url': reverse(
-                'favs:index_page',
-                kwargs={'page': page + 1}),
+            'urls': urls,
+            'page': page,
         }
         return HttpResponse(template.render(context, request))
     # loginを強要
@@ -73,14 +84,22 @@ def show(request, screen_name, page=1):
     tweets = twitter.add_htmls_embedded(twitter.favlist(user_id, page))
     tweets = [item for item in tweets if 'media' in item['entities']]
     # print(tweets[0]['entities']['media'])
+
+    def page_url(page):
+        return reverse('favs:show_page', kwargs={'screen_name': screen_name,
+                                                 'page': max(page, 0)})
+    urls = [{'page': page - 1, 'url': page_url(page - 1), 'name': 'Prev'}]
+    for i in range(-2, 3):
+        pagei = page + i
+        urls = urls + [{'page': pagei, 'url': page_url(pagei), 'name': pagei}]
+    urls = urls + [
+        {'page': page + 1, 'url': page_url(page + 1), 'name': 'Next'}]
     context = {
         'user': request.user,
         'user_id': user_id,
         'tweets': tweets,
-        'next_url': reverse(
-            'favs:show_page',
-            kwargs={'screen_name': screen_name,
-                    'page': page + 1}),
+        'urls': urls,
+        'page': page,
     }
     return HttpResponse(template.render(context, request))
 
@@ -101,3 +120,8 @@ def about(request):
         'user': request.user,
     }
     return HttpResponse(template.render(context, request))
+
+
+def text(request):
+    u"""テスト用."""
+    return HttpResponseNotFound('<h1>Test Text.</h1>')

@@ -13,4 +13,5 @@ urlpatterns = [
     path('<str:screen_name>/show/<int:page>/', views.show, name='show_page'),
     path('contact/', views.contact, name="contact"),
     path('about/', views.about, name="about"),
+    path('text/', views.text, name="text"),
 ]

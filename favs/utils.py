@@ -60,7 +60,7 @@ class TwitterClient:
         u"""対称ユーザーのいいね欄を表示."""
         params = {
             'user_id': user_id,
-            'count': 200,
+            'count': 100,
             'page': page,
         }
         res = self.session.get(self.urls['favlist'], params=params)

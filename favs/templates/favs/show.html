@@ -10,14 +10,24 @@
 <div class="widget_area">
     <ul class="widgets js-grid">
 	{% for tweet in tweets %}
-	{% include 'favs/_tweet.html' %}
-	{#{% include 'favs/_tweet_img.html' %}#}
+	{#{% include 'favs/_tweet.html' %}#}
+	{% include 'favs/_tweet_img.html' %}
 	{% endfor %}
     </ul>
 </div>
 
-<ul class="pager">
-    <li class="next text-center"><a href="{{ next_url }}">Next</a></li>
+<ul class="pagination m-auto">
+    {% for url in urls %}
+        {% if url.page >= 1 %}
+            <li><a href="{{ url.url }}">
+                {% if url.page == page %}
+                    <button class="btn btn-lg active">{{ url.name }}</button>
+                {% else %}
+                    <button class="btn btn-lg">{{ url.name }}</button>
+                {% endif %}
+            </a></li>
+        {% endif %}
+    {% endfor %}
 </ul>
 <script> 
  $(window).on('load', function(){

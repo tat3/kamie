@@ -138,7 +138,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'nginx/staticfiles/')
 STATICFILES_DIRS = (
     # os.path.join(BASE_DIR, 'static'),
 )
@@ -157,3 +158,7 @@ SOCIAL_AUTH_TWITTER_SECRET = os.environ['tw_cs']
 # SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'http://localhost:8080/twitterManager/top'
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/auth/complete'
 USE_X_FORWARDED_HOST = True
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = (os.environ.get('PRODUCTION') != 'True')
+TEMPLATE_DEBUG = (os.environ.get('PRODUCTION') != 'True')

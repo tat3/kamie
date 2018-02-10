@@ -60,4 +60,14 @@
 .arial {
   font-family: arial; }
 
+.pagination {
+  padding-bottom: 30px;
+  justify-content: center; }
+  .pagination li {
+    padding-left: 10px; }
+    .pagination li a button {
+      color: #55acee; }
+      .pagination li a button.active {
+        border-color: #55acee; }
+
 /*# sourceMappingURL=style.css.map */
