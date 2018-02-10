@@ -1,3 +1,4 @@
+/* For media query */
 #main {
   background-color: #f5f5f5; }
 
@@ -27,12 +28,12 @@
     #navbar li:hover {
       background-color: #ffffff;
       transition: 0.5s; }
-    #navbar li a p {
-      color: #ffffff; }
-      #navbar li a p:hover {
+      #navbar li:hover a p {
         opacity: 1;
         color: #55acee;
         transition: 0.5s; }
+    #navbar li a p {
+      color: #ffffff; }
 
 .white {
   color: #ffffff !important;
@@ -69,5 +70,47 @@
       color: #55acee; }
       .pagination li a button.active {
         border-color: #55acee; }
+
+.social-area {
+  padding-bottom: 20px; }
+
+.twitter_btn {
+  width: 200px;
+  height: 50px;
+  background-color: #333333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  margin: auto; }
+  .twitter_btn i {
+    color: #ffffff;
+    display: block;
+    width: 100%;
+    text-align: center; }
+    .twitter_btn i.hover {
+      position: absolute;
+      top: -50%;
+      left: 50%;
+      transform: translate(-50%, -50%); }
+  .twitter_btn:hover {
+    background-color: #55acee;
+    transition: 0.5s; }
+    .twitter_btn:hover i.usual {
+      display: none; }
+    .twitter_btn:hover i.hover {
+      top: 50%;
+      transition: 0.3s; }
+
+.article-area {
+  padding: 20px 0; }
+
+.article {
+  width: 600px;
+  margin: auto; }
+  @media screen and (max-width: 767px) {
+    .article {
+      width: 100%; } }
 
 /*# sourceMappingURL=style.css.map */

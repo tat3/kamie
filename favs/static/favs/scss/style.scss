@@ -1,3 +1,18 @@
+/* For media query */
+$breakpoints: (
+  'sm': 'screen and (max-width: 399px)',
+  'md': 'screen and (max-width: 767px)',
+  'lg': 'screen and (max-width: 999px)',
+  'xl': 'screen and (max-width: 1199px)',
+) !default;
+
+@mixin mq($breakpoint: md) {
+  @media #{map-get($breakpoints, $breakpoint)} {
+    @content;
+  }
+}
+
+
 $tw-bg: #E6ECF1;
 $white-bg: #f5f5f5;
 #main {
@@ -40,16 +55,15 @@ $tw-blue: #55acee;
         &:hover {
             background-color: #ffffff;
             transition: 0.5s;
-            // border-top: 1px solid #ffffff;
+
+            & a p {
+                opacity: 1;
+                color: $tw-blue;
+                transition: 0.5s;                
+            }
         }
         & a p {
             color: #ffffff;
-            // opacity: 1 !important;
-            &:hover {
-                opacity: 1;
-                color: $tw-blue;
-                transition: 0.5s;
-            }
         }
     }
 }
@@ -99,5 +113,63 @@ $tw-blue: #55acee;
                 border-color: $tw-blue;
             }
         }
+    }
+}
+
+.social-area {
+    padding-bottom: 20px;
+}
+
+.twitter_btn {                                                                           
+    width: 200px;                                                                        
+    height: 50px;                                                                        
+    //margin: 0 auto 0 auto;                                                             
+    background-color: #333333;                                                           
+    display: flex;                                                                       
+    align-items: center;                                                                 
+    justify-content: center;                                                             
+    position: relative;                                                                  
+    overflow: hidden;
+    margin: auto;                                                                
+                                                                                         
+    i {                                                                                  
+        color: #ffffff;;                                                                 
+        display: block;
+        width: 100%;
+        text-align: center;                                                             
+                                                                                         
+        &.hover {                                                                        
+            position: absolute;                                                          
+            top: -50%;                                                                   
+            left: 50%;                                                                   
+            transform: translate(-50%,-50%);                                             
+        }                                                                                
+                                                                                         
+    }                                                                                    
+    &:hover {                                                                            
+        background-color: $tw-blue;                                                 
+        transition: 0.5s;                                                                
+                                                                                         
+        i.usual {                                                                        
+            display: none;                                                               
+        }                                                                                
+        i.hover {                                                                        
+            top: 50%;                                                                    
+            transition: 0.3s;                                                            
+        }                                                                                
+                                                                                         
+    }                                                                                    
+}
+
+.article-area {
+    padding: 20px 0;
+}
+
+.article {
+    width: 600px;
+    margin: auto;
+
+    @include mq() {
+        width: 100%;
     }
 }

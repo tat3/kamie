@@ -1,13 +1,13 @@
 {% if 'media' in tweet.entities %}
 
 {% if 'media_url_https' in tweet.entities.media %}
-{% include 'favs/_each_tweet.html' with url=tweet.entities.media.media_url_https %}
+    {% include 'favs/_each_tweet.html' with url=tweet.entities.media.media_url_https %}
 {% endif %}
 
 {% for media in tweet.extended_entities.media %}
-{% if 'media_url_https' in media %}
-{% include 'favs/_each_tweet.html' with url=media.media_url_https %}
-{% endif %}
+    {% if 'media_url_https' in media %}
+        {% include 'favs/_each_tweet.html' with url=media.media_url_https %}
+    {% endif %}
 {% endfor %}
 
 {% endif %}

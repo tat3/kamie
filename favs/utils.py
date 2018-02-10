@@ -133,6 +133,21 @@ class TwitterClient:
 
         return tweets_add
 
+
+def twitter_btn_url(request):
+    u"""ツイートボタンを追加するのに必要な情報."""
+    url_split = request.build_absolute_uri().split("/")
+    url = {"scheme": url_split[0], "domain": url_split[2]}
+    d = {
+        "text": "いいね",
+        "lang": "ja",
+        "hashtag": "FavManager",
+        "url": "{scheme}//{domain}".format(**url)
+    }
+    param = "hashtags={hashtag}&text={text}&lang={lang}&url={url}".format(**d)
+    return "https://twitter.com/intent/tweet?" + param
+
+
 if __name__ == '__main__':
 
     user_id = '1212759744'

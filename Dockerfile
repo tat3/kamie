@@ -5,4 +5,4 @@ RUN mkdir $DIRAPP
 WORKDIR $DIRAPP
 ADD requirements.txt $DIRAPP/
 RUN pip install -r requirements.txt
-ADD . $DIRAPP/
+# ADD . $DIRAPP/

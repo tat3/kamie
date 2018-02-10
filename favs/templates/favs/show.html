@@ -11,7 +11,7 @@
     <ul class="widgets js-grid">
 	{% for tweet in tweets %}
 	{#{% include 'favs/_tweet.html' %}#}
-	{% include 'favs/_tweet_img.html' %}
+    {% include 'favs/_tweet_img.html' %}
 	{% endfor %}
     </ul>
 </div>
@@ -29,6 +29,12 @@
         {% endif %}
     {% endfor %}
 </ul>
+
+<div class="social-area">
+    {% include 'favs/_twitter_btn.html' %}
+</div>
+
+
 <script> 
  $(window).on('load', function(){
      setTimeout(function(){

@@ -2,12 +2,13 @@
 
 {% block head %}{% endblock %}
 
-{% block title %}Logout{% endblock %}
+{% block title %}Contact{% endblock %}
 
 {% block main %}
-<div>
-    <p>いい感じの人</p>
-    <p>hogehoge@hogehoge.com</p>
+<div class="article-area">
+    {% for content in contents %}
+        {% include 'favs/_article.html' %}
+    {% endfor %}
 </div>
 
 {% endblock %}

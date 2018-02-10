@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '4hgw1nblx%dbh0nc3e%&jz6wpnjh!=irr&55+^cx6f(a5$=rtm'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', 'app', 'sleepy-sierra-36875.herokuapp.com']
 
@@ -141,7 +141,7 @@ STATIC_URL = '/static/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = (
-    # os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'static'),
 )
 
 # Simplified static file serving.
@@ -161,7 +161,7 @@ USE_X_FORWARDED_HOST = True
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = (os.environ.get('PRODUCTION') != 'True')
-TEMPLATE_DEBUG = (os.environ.get('PRODUCTION') != 'True')
+# TEMPLATE_DEBUG = (os.environ.get('PRODUCTION') != 'True')
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/

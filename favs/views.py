@@ -2,6 +2,8 @@ u"""いいねしたツイートを表示する."""
 
 import os
 
+import json
+
 # from django.shortcuts import render
 from django.http import (
     HttpResponse, HttpResponseRedirect, HttpResponseNotFound,
@@ -59,6 +61,7 @@ def index(request, page=1):
             'tweets': tweets,
             'urls': urls,
             'page': page,
+            'twitter_btn_url': utils.twitter_btn_url(request),
         }
         return HttpResponse(template.render(context, request))
     # loginを強要
@@ -100,26 +103,30 @@ def show(request, screen_name, page=1):
         'tweets': tweets,
         'urls': urls,
         'page': page,
+        'twitter_btn_url': utils.twitter_btn_url(request),
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def information(request, name):
+    u"""json内の情報を表示する."""
+    template = loader.get_template(template_path('{}.html'.format(name)))
+    contents = json.load(open('favs/json/{}.json'.format(name), 'r'))
+    context = {
+        'user': request.user,
+        'contents': contents,
     }
     return HttpResponse(template.render(context, request))
 
 
 def contact(request):
-    u"""Contact usに表示される内容."""
-    template = loader.get_template(template_path('contact.html'))
-    context = {
-        'user': request.user,
-    }
-    return HttpResponse(template.render(context, request))
+    u"""Contact usを表示."""
+    return information(request, 'contact')
 
 
 def about(request):
-    u"""Contact usに表示される内容."""
-    template = loader.get_template(template_path('about.html'))
-    context = {
-        'user': request.user,
-    }
-    return HttpResponse(template.render(context, request))
+    u"""About usを表示."""
+    return information(request, 'about')
 
 
 def text(request):
