@@ -139,7 +139,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
-STATIC_ROOT = os.path.join(BASE_DIR, 'nginx/staticfiles/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = (
     # os.path.join(BASE_DIR, 'static'),
 )
@@ -162,3 +162,8 @@ USE_X_FORWARDED_HOST = True
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = (os.environ.get('PRODUCTION') != 'True')
 TEMPLATE_DEBUG = (os.environ.get('PRODUCTION') != 'True')
+
+# Simplified static file serving.
+# https://warehouse.python.org/project/whitenoise/
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
