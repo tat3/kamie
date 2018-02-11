@@ -1,5 +1,18 @@
-<li class="widget js-grid-item">
-    <a href="{{ url }}">
+<!--<li class="widget js-grid-item">
+    <a>
 	<img class="widget_img" src="{{ url }}">
     </a>
+</li>-->
+
+<li class="widget js-grid-item">
+    <div class="card">
+        <img class="card-img" src="{{ url }}" alt="カードの画像">
+        <a href="https://twitter.com/{{ tweet.user.screen_name }}/status/{{ tweet.id }}" target="_blank">
+            <div class="card-img-overlay widget_text text-white">
+                <h5 class="card-title">{{ tweet.user.name}}@{{  tweet.user.screen_name }}</h5>
+                <p class="card-text">{{ tweet.text }}</p>
+                <p class="card-text"><small>{{ tweet.created_at }}</small></p>
+            </div>
+        </a>
+    </div>
 </li>

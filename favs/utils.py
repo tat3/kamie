@@ -155,14 +155,14 @@ if __name__ == '__main__':
 
     twitter = TwitterClient()
 
-    user = twitter.user_from_screen_name(screen_name)
+    # user = twitter.user_from_screen_name(screen_name)
     # user_id = user['id_str']
-    twitter.show_user(user)
+    # twitter.show_user(user)
 
-    # tweets = twitter.timeline()
+    tweets = twitter.timeline()
     # tweets = twitter.favlist(user_id)
     # twitter.show_tweets(tweets)
     # tweets = twitter.add_htmls_embedded(tweets)
-    # print(tweets[0])
+    print(tweets[0])
 
     # print(twitter.issue_request_url())

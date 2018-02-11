@@ -48,7 +48,7 @@ def index(request, page=1):
             return reverse('favs:index_page', kwargs={'page': max(page, 0)})
 
         urls = [{'page': page - 1, 'url': page_url(page - 1), 'name': 'Prev'}]
-        for i in range(-2, 3):
+        for i in range(-1, 2):
             pagei = page + i
             urls = urls + [
                 {'page': pagei, 'url': page_url(pagei), 'name': pagei}]
@@ -92,7 +92,7 @@ def show(request, screen_name, page=1):
         return reverse('favs:show_page', kwargs={'screen_name': screen_name,
                                                  'page': max(page, 0)})
     urls = [{'page': page - 1, 'url': page_url(page - 1), 'name': 'Prev'}]
-    for i in range(-2, 3):
+    for i in range(-1, 2):
         pagei = page + i
         urls = urls + [{'page': pagei, 'url': page_url(pagei), 'name': pagei}]
     urls = urls + [

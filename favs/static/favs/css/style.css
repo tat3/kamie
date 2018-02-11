@@ -10,11 +10,20 @@
 .widget {
   box-sizing: border-box;
   width: 320px;
-  padding: 0 10px; }
+  padding: 10px 10px;
+  /* kill default margin */ }
+  .widget twitterwidget {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important; }
   .widget_img {
     width: 100%;
     display: block;
     margin: 10px 0; }
+  .widget .widget_text {
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none; }
+  .widget:hover .widget_text {
+    display: block; }
 
 #footer {
   background-color: #55acee;
@@ -22,7 +31,10 @@
   color: #ffffff; }
 
 #navbar {
-  background-color: #55acee; }
+  background-color: #55acee;
+  box-shadow: 0 1px 2px #cccccc; }
+  #navbar .logo:hover {
+    opacity: 0.8; }
   #navbar li {
     padding: 0 10px; }
     #navbar li:hover {
@@ -67,6 +79,7 @@
   .pagination li {
     padding-left: 10px; }
     .pagination li a button {
+      background-color: #ffffff;
       color: #55acee; }
       .pagination li a button.active {
         border-color: #55acee; }
