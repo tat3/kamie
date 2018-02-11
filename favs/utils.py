@@ -148,6 +148,13 @@ def twitter_btn_url(request):
     return "https://twitter.com/intent/tweet?" + param
 
 
+def is_pc(request):
+    u"""ユーザーエージェントからPC or SPを判断."""
+    from user_agents import parse
+    ua_string = request.META['HTTP_USER_AGENT']
+    user_agent = parse(ua_string)
+    return not user_agent.is_mobile
+
 if __name__ == '__main__':
 
     user_id = '1212759744'

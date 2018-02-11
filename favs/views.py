@@ -29,41 +29,58 @@ def redirect_favs_root():
     return HttpResponseRedirect(template_path('index.html'))
 
 
-def index(request, page=1):
-    u"""トップページもしくはユーザーのいいねを表示."""
-    if not request.user.is_anonymous:
-        template = loader.get_template(template_path('show.html'))
-        user = UserSocialAuth.objects.get(user_id=request.user.id)
+def list(request, page, data):
+    u"""いいねを表示."""
+    template = loader.get_template(template_path('show.html'))
 
+    if request.user.is_anonymous:
+        twitter = utils.TwitterClient()
+    else:
+        user = UserSocialAuth.objects.get(user_id=request.user.id)
         user = user.access_token
         twitter = utils.TwitterClient(user)
 
-        user_id = user['user_id']
+    tweets = twitter.add_htmls_embedded(twitter.favlist(data['user_id'], page))
+    tweets = [item for item in tweets if 'media' in item['entities']]
+    # print(tweets[0]['entities']['media'])
 
-        tweets = twitter.favlist(user_id)
-        tweets = twitter.add_htmls_embedded(tweets)
-        # tweets = [item for item in tweets if 'media' in item['entities']]
+    def page_url(page):
+        if data['name'] == 'index':
+            return reverse('favs:index_page',
+                           kwargs={'page': max(page, 0)})
+        else:
+            return reverse('favs:show_page',
+                           kwargs={'screen_name': data['screen_name'],
+                                   'page': max(page, 0)})
 
-        def page_url(page):
-            return reverse('favs:index_page', kwargs={'page': max(page, 0)})
+    urls = [{'page': page - 1, 'url': page_url(page - 1), 'name': 'Prev'}]
+    for i in range(-1, 2):
+        pagei = page + i
+        urls = urls + [{'page': pagei, 'url': page_url(pagei), 'name': pagei}]
+    urls = urls + [
+        {'page': page + 1, 'url': page_url(page + 1), 'name': 'Next'}]
+    context = {
+        'user': request.user,
+        'user_id': data['user_id'],
+        'tweets': tweets,
+        'urls': urls,
+        'page': page,
+        'twitter_btn_url': utils.twitter_btn_url(request),
+        'is_pc': utils.is_pc(request),
+    }
+    return HttpResponse(template.render(context, request))
 
-        urls = [{'page': page - 1, 'url': page_url(page - 1), 'name': 'Prev'}]
-        for i in range(-1, 2):
-            pagei = page + i
-            urls = urls + [
-                {'page': pagei, 'url': page_url(pagei), 'name': pagei}]
-        urls = urls + [
-            {'page': page + 1, 'url': page_url(page + 1), 'name': 'Next'}]
 
-        context = {
-            'user': request.user,
-            'user_id': user_id,
-            'tweets': tweets,
-            'urls': urls,
-            'page': page,
-            'twitter_btn_url': utils.twitter_btn_url(request),
+def index(request, page=1):
+    u"""トップページもしくはユーザーのいいねを表示."""
+    if not request.user.is_anonymous:
+        user = UserSocialAuth.objects.get(user_id=request.user.id).access_token
+        data = {
+            'name': 'index',
+            'user_id': user['user_id'],
         }
-        return HttpResponse(template.render(context, request))
+        return list(request, page, data)
+
     # loginを強要
     # return HttpResponseRedirect(reverse('twitterManager:login'))
 
@@ -76,36 +93,25 @@ def index(request, page=1):
 
 def show(request, screen_name, page=1):
     u"""指定したユーザーのいいねを表示."""
-    template = loader.get_template(template_path('show.html'))
+    if request.user.is_anonymous:
+        twitter = utils.TwitterClient()
+    else:
+        user = UserSocialAuth.objects.get(user_id=request.user.id)
+        user = user.access_token
+        twitter = utils.TwitterClient(user)
 
-    twitter = utils.TwitterClient()
     # user_id = '1212759744'
     user_id = twitter.user_id_from_screen_name(screen_name)
     if user_id == '':
         print(twitter.AT, twitter.AS)
         return HttpResponseNotFound('<h1>User not found.</h1>')
-    tweets = twitter.add_htmls_embedded(twitter.favlist(user_id, page))
-    tweets = [item for item in tweets if 'media' in item['entities']]
-    # print(tweets[0]['entities']['media'])
 
-    def page_url(page):
-        return reverse('favs:show_page', kwargs={'screen_name': screen_name,
-                                                 'page': max(page, 0)})
-    urls = [{'page': page - 1, 'url': page_url(page - 1), 'name': 'Prev'}]
-    for i in range(-1, 2):
-        pagei = page + i
-        urls = urls + [{'page': pagei, 'url': page_url(pagei), 'name': pagei}]
-    urls = urls + [
-        {'page': page + 1, 'url': page_url(page + 1), 'name': 'Next'}]
-    context = {
-        'user': request.user,
+    data = {
+        'name': 'show',
         'user_id': user_id,
-        'tweets': tweets,
-        'urls': urls,
-        'page': page,
-        'twitter_btn_url': utils.twitter_btn_url(request),
+        'screen_name': screen_name,
     }
-    return HttpResponse(template.render(context, request))
+    return list(request, page, data)
 
 
 def information(request, name):
