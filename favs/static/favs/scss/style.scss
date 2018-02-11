@@ -50,7 +50,7 @@ $white-bg: #f5f5f5;
         display: none;
     }
 
-    &:hover {
+    &_inner:hover {
         .widget_text{
             display: block;
         }

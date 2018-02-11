@@ -22,7 +22,7 @@
   .widget .widget_text {
     background-color: rgba(0, 0, 0, 0.7);
     display: none; }
-  .widget:hover .widget_text {
+  .widget_inner:hover .widget_text {
     display: block; }
 
 #footer {

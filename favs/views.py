@@ -53,12 +53,8 @@ def list(request, page, data):
                            kwargs={'screen_name': data['screen_name'],
                                    'page': max(page, 0)})
 
-    urls = [{'page': page - 1, 'url': page_url(page - 1), 'name': 'Prev'}]
-    for i in range(-1, 2):
-        pagei = page + i
-        urls = urls + [{'page': pagei, 'url': page_url(pagei), 'name': pagei}]
-    urls = urls + [
-        {'page': page + 1, 'url': page_url(page + 1), 'name': 'Next'}]
+    urls = map(lambda p: {'page': p, 'url': page_url(p), 'name': p},
+               range(page - 2, page + 3))
     context = {
         'user': request.user,
         'user_id': data['user_id'],
