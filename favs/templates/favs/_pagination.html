@@ -1,0 +1,13 @@
+<ul class="pagination m-auto">
+    {% for u in urls %}
+        {% if u.page >= 1 %}
+             <li><a href="{{ u.url }}">
+                {% if u.page == page %}
+                    <button class="btn btn-lg active">{{ u.name }}</button>
+                {% else %}
+                    <button class="btn btn-lg">{{ u.name }}</button>
+                {% endif %}
+            </a></li>
+        {% endif %}
+    {% endfor %}
+</ul>

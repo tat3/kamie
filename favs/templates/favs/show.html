@@ -7,9 +7,11 @@
 {% block main %}
 {# <p>USER ID: {{ user_id }}</p> #}
 
+{% include 'favs/_pagination.html' with urls=urls %}
+
 <div class="widget_area">
     <ul class="widgets js-grid">
-	{% for tweet in tweets %}
+ 	{% for tweet in tweets %}
         {% if is_pc %}
             {% include 'favs/_tweet_img.html' %}
         {% else %}
@@ -19,24 +21,11 @@
     </ul>
 </div>
 
-<ul class="pagination m-auto">
-    {% for url in urls %}
-        {% if url.page >= 1 %}
-            <li><a href="{{ url.url }}">
-                {% if url.page == page %}
-                    <button class="btn btn-lg active">{{ url.name }}</button>
-                {% else %}
-                    <button class="btn btn-lg">{{ url.name }}</button>
-                {% endif %}
-            </a></li>
-        {% endif %}
-    {% endfor %}
-</ul>
+{% include 'favs/_pagination.html' with urls=urls2 %}
 
 <div class="social-area">
     {% include 'favs/_twitter_btn.html' %}
 </div>
-
 
 <script> 
  $(window).on('load', function(){

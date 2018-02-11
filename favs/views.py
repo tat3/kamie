@@ -60,6 +60,7 @@ def list(request, page, data):
         'user_id': data['user_id'],
         'tweets': tweets,
         'urls': urls,
+        'urls2': urls,
         'page': page,
         'twitter_btn_url': utils.twitter_btn_url(request),
         'is_pc': utils.is_pc(request),

@@ -74,7 +74,7 @@
   font-family: arial; }
 
 .pagination {
-  padding-bottom: 30px;
+  padding-top: 20px;
   justify-content: center; }
   .pagination li {
     padding-left: 10px; }
@@ -85,7 +85,7 @@
         border-color: #55acee; }
 
 .social-area {
-  padding-bottom: 20px; }
+  padding: 30px; }
 
 .twitter_btn {
   width: 200px;
