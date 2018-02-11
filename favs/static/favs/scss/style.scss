@@ -116,7 +116,7 @@ $tw-blue: #55acee;
     padding: 0;
 }
 
-.logout {
+.log {
     p {
         padding: 20px 0;
         & a button {
@@ -195,7 +195,7 @@ $tw-blue: #55acee;
 
 .article {
     width: 600px;
-    margin: auto;
+    margin: 0 auto 20px auto;
 
     @include mq() {
         width: 100%;

@@ -64,9 +64,9 @@
   margin: 0;
   padding: 0; }
 
-.logout p {
+.log p {
   padding: 20px 0; }
-  .logout p a button {
+  .log p a button {
     background-color: #55acee;
     border-color: #55acee; }
 
@@ -121,7 +121,7 @@
 
 .article {
   width: 600px;
-  margin: auto; }
+  margin: 0 auto 20px auto; }
   @media screen and (max-width: 767px) {
     .article {
       width: 100%; } }

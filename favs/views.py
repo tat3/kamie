@@ -55,7 +55,7 @@ def list(request, page, data):
                                    'page': max(page, 0)})
 
     urls = map(lambda p: {'page': p, 'url': page_url(p), 'name': p},
-               range(page - 2, page + 3))
+               range(page - 1, page + 4))
     urls2 = copy.deepcopy(urls)
     context = {
         'user': request.user,
@@ -83,11 +83,12 @@ def index(request, page=1):
     # loginを強要
     # return HttpResponseRedirect(reverse('twitterManager:login'))
 
-    template = loader.get_template(template_path('index.html'))
-    context = {
-        'user': request.user,
-    }
-    return HttpResponse(template.render(context, request))
+    return information(request, 'index')
+
+    # template = loader.get_template(template_path('index.html'))
+    # context = {
+    # }
+    # return HttpResponse(template.render(context, request))
 
 
 def show(request, screen_name, page=1):
