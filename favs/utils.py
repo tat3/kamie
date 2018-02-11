@@ -153,7 +153,8 @@ def is_pc(request):
     from user_agents import parse
     ua_string = request.META['HTTP_USER_AGENT']
     user_agent = parse(ua_string)
-    return not user_agent.is_mobile
+    # return not user_agent.is_mobile
+    return True
 
 if __name__ == '__main__':
 
