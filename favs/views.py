@@ -3,6 +3,7 @@ u"""いいねしたツイートを表示する."""
 import os
 
 import json
+import copy
 
 # from django.shortcuts import render
 from django.http import (
@@ -55,12 +56,13 @@ def list(request, page, data):
 
     urls = map(lambda p: {'page': p, 'url': page_url(p), 'name': p},
                range(page - 2, page + 3))
+    urls2 = copy.deepcopy(urls)
     context = {
         'user': request.user,
         'user_id': data['user_id'],
         'tweets': tweets,
         'urls': urls,
-        'urls2': urls,
+        'urls2': urls2,
         'page': page,
         'twitter_btn_url': utils.twitter_btn_url(request),
         'is_pc': utils.is_pc(request),
