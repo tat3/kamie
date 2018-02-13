@@ -139,7 +139,7 @@ def twitter_btn_url(request):
     url_split = request.build_absolute_uri().split("/")
     url = {"scheme": url_split[0], "domain": url_split[2]}
     d = {
-        "text": "いいね",
+        "text": "Twitterでいいねした画像ツイートを一覧できるサービス「Kamie Album」",
         "lang": "ja",
         "hashtag": "KamieAlbum",
         "url": "{scheme}//{domain}".format(**url)
