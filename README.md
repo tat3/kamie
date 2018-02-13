@@ -1,4 +1,4 @@
-#Fav Manager
+#Kamie Album
 
 
 #python social auth(PSA)について

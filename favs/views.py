@@ -125,6 +125,11 @@ def information(request, name):
     return HttpResponse(template.render(context, request))
 
 
+def account(request):
+    u"""アカウント情報を表示."""
+    return information(request, 'account')
+
+
 def contact(request):
     u"""Contact usを表示."""
     return information(request, 'contact')

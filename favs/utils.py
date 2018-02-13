@@ -141,7 +141,7 @@ def twitter_btn_url(request):
     d = {
         "text": "いいね",
         "lang": "ja",
-        "hashtag": "FavManager",
+        "hashtag": "KamieAlbum",
         "url": "{scheme}//{domain}".format(**url)
     }
     param = "hashtags={hashtag}&text={text}&lang={lang}&url={url}".format(**d)

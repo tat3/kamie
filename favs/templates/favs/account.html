@@ -1,0 +1,14 @@
+{% extends 'favs/layout.html' %}
+
+{% block head %}{% endblock %}
+
+{% block title %}Account{% endblock %}
+
+{% block main %}
+<div class="article-area">
+    {% for content in contents %}
+        {% include 'favs/_article.html' %}
+    {% endfor %}
+</div>
+
+{% endblock %}
