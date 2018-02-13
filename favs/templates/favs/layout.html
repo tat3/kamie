@@ -8,6 +8,9 @@
         <!-- For Twitter Card -->
         {% include 'favs/_twitter_card.html' %}
 
+        <meta name="keywords" content="Twitter,ツイッター,ふぁぼ,いいね,画像,連携,管理">
+        <meta name="description" content="Kamie AlbumはTwitterでいいねした大切な画像ツイートを一覧できるサービスです。いいねのしすぎで大好きな画像を遡れなくなる方、数年前まで違うジャンルにハマっていた方などにおすすめです。"
+
         <link rel="shortcut icon" href="{% static 'favs/img/icon.png' %}" type="image/png">
 
         <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -46,9 +49,10 @@
 
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
+        <script src="{% static 'favs/js/main.js' %}"></script>
 
 		{% block head %}{% endblock %}
-		<title>{% block title %}{% endblock %} | FavManager</title>
+		<title>{% block title %}{% endblock %} | Kamie Album</title>
 
     </head>
 
