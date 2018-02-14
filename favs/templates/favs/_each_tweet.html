@@ -1,6 +1,6 @@
 <li class="widget js-grid-item">
     <div class="card widget_inner">
-        <img class="card-img" src="{{ url }}" alt="カードの画像">
+        <img class="card-img js-grid-img" data-url="{{ url }}" alt="カードの画像">
         <div class="card-img-overlay widget_text text-white">
             <h5 class="card-title">{{ tweet.user.name}}@{{  tweet.user.screen_name }}</h5>
             <p class="card-text">{{ tweet.text|safe }}</p>

@@ -143,3 +143,11 @@ def about(request):
 def text(request):
     u"""テスト用."""
     return HttpResponseNotFound('<h1>Test Text.</h1>')
+
+
+def test_masonry(request):
+    u"""masonry.jsのテスト."""
+    template = loader.get_template(template_path('test_masonry.html'))
+    context = {
+    }
+    return HttpResponse(template.render(context, request))

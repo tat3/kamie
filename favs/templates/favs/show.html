@@ -11,13 +11,15 @@
 
 <div class="widget_area">
     <ul class="widgets js-grid">
- 	{% for tweet in tweets %}
+    </ul>
+    <ul class="js-grid-backyard">
+    {% for tweet in tweets %}
         {% if is_pc %}
             {% include 'favs/_tweet_img.html' %}
         {% else %}
             {% include 'favs/_tweet.html' %}
         {% endif %}
-	{% endfor %}
+    {% endfor %}
     </ul>
 </div>
 

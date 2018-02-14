@@ -1,0 +1,29 @@
+{% extends 'favs/layout.html' %}
+
+{% block head %}{% endblock %}
+
+{% block title %}Test{% endblock %}
+
+{% block main %}
+
+<button class="btn btn-primary" id="test-button">Button</button>
+
+<div class="widget_area">
+    <ul class="widgets js-grid-test">
+    </ul>
+</div>
+
+<script>
+    const masonry = $('.js-grid-test');
+    masonry.masonry({
+         columnWidth: 160,
+         fitWidth: true,
+    });
+    $('#test-button').on({
+        'click': function(){
+            masonry.append('<li class="widget js-grid-item"><img src="/static/favs/img/mark_heart.png"></li>').masonry('reloadItems').masonry('layout');
+        }
+    });
+</script>
+
+{% endblock %}

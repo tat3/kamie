@@ -23,7 +23,7 @@ from django.urls import path, include  # , reverse
 urlpatterns = [
     # path('', HttpResponseRedirect('favs/')),
     path('', include('favs.urls', namespace='favs')),
-    path('admin/', admin.site.urls),
+    path('admin_this_app/', admin.site.urls),
     path('auth/', include('twitterManager.urls', namespace='twitterManager')),
     path('social-auth/',
          include('social_django.urls', namespace='social-auth')

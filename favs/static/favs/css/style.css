@@ -26,6 +26,9 @@
   .widget_inner:hover .widget_text {
     transition: 0.2s; }
 
+.js-grid-backyard {
+  display: none; }
+
 #footer {
   background-color: #55acee;
   text-align: center;

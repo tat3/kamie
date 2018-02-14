@@ -15,4 +15,5 @@ urlpatterns = [
     path('contact/', views.contact, name="contact"),
     path('about/', views.about, name="about"),
     path('text/', views.text, name="text"),
+    path('test_masonry/', views.test_masonry, name="text_masonry"),
 ]
