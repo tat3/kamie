@@ -47,6 +47,7 @@ class TwitterClient:
             'authorize': 'https://twitter.com/oauth/authorize',
             'account_verified':
                 'https://api.twitter.com/1.1/account/verify_credentials.json',
+            'tweet': 'https://api.twitter.com/1.1/statuses/show.json',
         }
 
     def timeline(self):
@@ -57,7 +58,7 @@ class TwitterClient:
         return json.loads(res.text)
 
     def favlist(self, user_id, page=1):
-        u"""対称ユーザーのいいね欄を表示."""
+        u"""対象ユーザーのユーザーのいいね欄を表示."""
         params = {
             'user_id': user_id,
             'count': 100,
@@ -133,6 +134,16 @@ class TwitterClient:
 
         return tweets_add
 
+    def tweet_from_id(self, tweet_id):
+        u"""ツイートIDからツイートを取得."""
+        params = {
+            'id': tweet_id,
+        }
+        res = self.session.get(self.urls['tweet'], params=params)
+        if res.status_code != 200:
+            return {}
+        return json.loads(res.text)
+
 
 def twitter_btn_url(request):
     u"""ツイートボタンを追加するのに必要な情報."""
@@ -153,8 +164,10 @@ def is_pc(request):
     from user_agents import parse
     ua_string = request.META['HTTP_USER_AGENT']
     user_agent = parse(ua_string)
-    # return not user_agent.is_mobile
     return True
+
+    return not user_agent.is_mobile
+
 
 if __name__ == '__main__':
 

@@ -16,8 +16,10 @@ $(window).ready(function(){
      });
     $('.js-grid-img').each(function(index, elm){
         elm.onload = function(){
-            wrap.append($(this).parent().parent());
-            wrap.masonry('reloadItems').masonry('layout');
+            const item = $(this).parent().parent();
+            wrap.append(item);
+            // wrap.masonry('reloadItems').masonry('layout');
+            wrap.masonry('appended', item).masonry();
         };
         elm.src = $(elm).data('url');
     });

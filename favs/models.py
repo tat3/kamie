@@ -2,15 +2,14 @@
 from django.db import models
 
 
-# Create your models here.
+class Fav(models.Model):
+    u"""アプリ内のお気に入りを管理するテーブル."""
 
-class User(models.Model):
-    """user configured with twitter authentication."""
+    tweet_id = models.CharField(max_length=128)
+    saved_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey('social_django.UserSocialAuth',
+                             on_delete=models.CASCADE)
 
-    user_id = models.CharField(max_length=20, unique=True)
-
-    # access_token = models.CharField(max_length=100, unique=True, blank=True)
-    # access_secret = models.CharField(max_length=100, blank=True)
-    # oauth_token = models.CharField(max_length=100, unique=True, blank=True)
-    # oauth_secret = models.CharField(max_length=100, blank=True)
-    # created_at = models.DateTimeField(blank=True)
+    def __str__(self):
+        u"""tweet_idを.to_strとして返す."""
+        return self.tweet_id

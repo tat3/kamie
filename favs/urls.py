@@ -15,5 +15,8 @@ urlpatterns = [
     path('contact/', views.contact, name="contact"),
     path('about/', views.about, name="about"),
     path('text/', views.text, name="text"),
-    path('test_masonry/', views.test_masonry, name="text_masonry"),
+    # path('test_masonry/', views.test_masonry, name="text_masonry"),
+    path('save/confirm/<int:tweet_id>/', views.save_tweet_confirm,
+         name="save_tweet_confirm"),
+    path('save/<int:tweet_id>/', views.save_tweet, name="save_tweet"),
 ]

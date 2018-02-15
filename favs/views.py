@@ -14,6 +14,9 @@ from django.urls import reverse
 from social_django.models import UserSocialAuth
 from . import utils
 
+from django.contrib.auth.decorators import login_required
+from favs.models import Fav
+
 # Create your views here.
 
 app_name = 'favs'
@@ -55,7 +58,7 @@ def list(request, page, data):
                                    'page': max(page, 0)})
 
     urls = map(lambda p: {'page': p, 'url': page_url(p), 'name': p},
-               range(page - 1, page + 4))
+               range(page - 2, page + 3))
     urls2 = copy.deepcopy(urls)
     context = {
         'user': request.user,
@@ -84,11 +87,6 @@ def index(request, page=1):
     # return HttpResponseRedirect(reverse('twitterManager:login'))
 
     return information(request, 'index')
-
-    # template = loader.get_template(template_path('index.html'))
-    # context = {
-    # }
-    # return HttpResponse(template.render(context, request))
 
 
 def show(request, screen_name, page=1):
@@ -149,5 +147,41 @@ def test_masonry(request):
     u"""masonry.jsのテスト."""
     template = loader.get_template(template_path('test_masonry.html'))
     context = {
+    }
+    return HttpResponse(template.render(context, request))
+
+
+@login_required
+def save_tweet_confirm(request, tweet_id):
+    u"""ユーザーのお気に入り登録を確認."""
+    return save_tweet(request, tweet_id, confirm=True)
+
+
+@login_required
+def save_tweet(request, tweet_id, confirm=False):
+    u"""ユーザーのお気に入りを登録."""
+    tweet_id = str(tweet_id)
+
+    user = UserSocialAuth.objects.get(id=request.user.id)
+    twitter = utils.TwitterClient(user.access_token)
+    tweet = twitter.tweet_from_id(tweet_id)
+    if tweet == {}:
+        return HttpResponseNotFound('<h1>Tweet does not exist.</h1>')
+    fav = Fav(tweet_id=tweet_id, user=user)
+    # if not confirm:
+    #     fav.save()
+
+    template = loader.get_template(template_path('save_tweet.html'))
+    contents = [
+        {'title': 'ツイートをお気に入り登録する',
+         'body': '良ければ確認ボタンを押してください。'},
+        {'title': '{name}@{screen_name}'.format(
+            name=tweet['user']['name'],
+            screen_name=tweet['user']['screen_name']),
+         'body': tweet['text']},
+    ]
+    context = {
+        'contents': contents,
+        'tweet_id': tweet_id,
     }
     return HttpResponse(template.render(context, request))
