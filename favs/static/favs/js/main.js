@@ -26,16 +26,6 @@ $(window).ready(function(){
 });
 
 $(function(){
-    const toggleOpacity = function(){
-        let opacity = $(this).css('opacity');
-        if(opacity >= 0.5){
-            opacity = 0;
-        }else{
-            opacity = 1;
-        }
-        $(this).css('opacity', opacity);
-    };
-
     const hide_object = function(){
         $(this).removeClass('show');
     };
@@ -44,13 +34,11 @@ $(function(){
     };
     const toggleVisible = function(){
         if($(this).hasClass('show')){
-            hide_object();
+            hide_object.call(this);
         }else{
-            show_object();
+            show_object.call(this);
         }
     };
-
-
 
     $('.widget_text').on({
         'click': toggleVisible,
