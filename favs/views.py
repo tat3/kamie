@@ -1,14 +1,15 @@
 u"""いいねしたツイートを表示する."""
 
 import os
-
 import json
+import datetime
+from pytz import timezone
 
 # from django.shortcuts import render
 from django.http import (
     HttpResponse, HttpResponseRedirect, HttpResponseNotFound,
 )
-from django.template import loader
+from django.template import loader, Library
 from django.urls import reverse
 from social_django.models import UserSocialAuth
 from . import utils
@@ -19,6 +20,7 @@ from favs.models import Fav
 # Create your views here.
 
 app_name = 'favs'
+register = Library()
 
 
 def template_path(name):
@@ -193,14 +195,17 @@ def save_tweet(request, tweet_id, confirm=False):
     if not Fav.objects.filter(tweet_id=tweet_id, user=user).count() == 0:
         return HttpResponseNotFound('<h1>Tweet is already saved.</h1>')
     fav = Fav(tweet_id=tweet_id, user=user)
+
     if not confirm:
         fav.save()
-        return HttpResponseRedirect(reverse('favs:index'))
+        # return HttpResponseRedirect(reverse('favs:index'))
+        return HttpResponse("<script>window.close()</script>")
 
     template = loader.get_template(template_path('save_tweet.html'))
     contents = [
         {'title': 'ツイートをお気に入り登録する',
-         'body': '良ければ確認ボタンを押してください。'},
+         'body': ('良ければ確認ボタンを押してください。<br>'
+                  'お気に入りしたツイートは<a href="/account/">アカウント画面</a>から確認できます。')},
         {'title': '{name}@{screen_name}'.format(
             name=tweet['user']['name'],
             screen_name=tweet['user']['screen_name']),
@@ -211,3 +216,11 @@ def save_tweet(request, tweet_id, confirm=False):
         'tweet_id': tweet_id,
     }
     return HttpResponse(template.render(context, request))
+
+
+@register.simple_tag
+def created_time(created_at):
+    u"""Format datetime string."""
+    dt = datetime.strptime(created_at, '%a %b %d %H:%M:%S +0000 %Y')
+    dt = timezone('Asia/Tokyo').localize(dt)
+    return dt.strftime('%H:%M - %Y年%m月%d日')

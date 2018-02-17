@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'favs.apps.FavsConfig',
     'social_django',
     'bootstrap4',
+    # 'favs.templatetags.util_tags',
 ]
 
 MIDDLEWARE = [
@@ -75,6 +76,10 @@ TEMPLATES = [
         },
     },
 ]
+
+TEMPLATE_LOADERS = (
+    'django.template.loaders.app_directories.load_template_source',
+)
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 

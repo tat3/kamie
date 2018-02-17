@@ -30,13 +30,12 @@ body {
   .widget twitterwidget {
     margin-top: 0 !important;
     margin-bottom: 0 !important; }
-  .widget_img {
-    width: 100%;
-    display: block;
-    margin: 10px 0; }
   .widget .widget_text {
     background-color: rgba(0, 0, 0, 0.7);
-    opacity: 0; }
+    min-height: 100%;
+    opacity: 0;
+    bottom: auto;
+    z-index: 1; }
   .widget_inner:hover .widget_text {
     transition: 0.2s; }
 
