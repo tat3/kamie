@@ -42,6 +42,7 @@ body {
     // max-width: 960px;
     margin: 0 auto;
     padding: 10px 0;
+
 }
 .widget {
     box-sizing: border-box;
@@ -68,9 +69,16 @@ body {
         background-color: rgba(0, 0, 0, 0.7);
         min-height: 100%;
         //display: none;
-        opacity: 0;
-        bottom: auto;
         z-index: 1;
+
+        opacity: 0;
+        bottom: 0;
+        overflow: hidden;
+    }
+
+    .show {
+        opacity: 1;
+        bottom: auto;
     }
 
     &_inner:hover {

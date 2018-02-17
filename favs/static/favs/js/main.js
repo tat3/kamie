@@ -35,17 +35,26 @@ $(function(){
         }
         $(this).css('opacity', opacity);
     };
-    const hideDOM = function(){
-        $(this).css('opacity', 0);
+
+    const hide_object = function(){
+        $(this).removeClass('show');
     };
-    const showDOM = function(){
-        $(this).css('opacity', 1);
+    const show_object = function(){
+        $(this).addClass('show');
     };
+    const toggleVisible = function(){
+        if($(this).hasClass('show')){
+            hide_object();
+        }else{
+            show_object();
+        }
+    };
+
 
 
     $('.widget_text').on({
-        'click': toggleOpacity,
-        'mouseover': showDOM,
-        'mouseout': hideDOM
+        'click': toggleVisible,
+        'mouseover': show_object,
+        'mouseout': hide_object,
     });
 });

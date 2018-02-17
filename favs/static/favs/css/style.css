@@ -33,9 +33,13 @@ body {
   .widget .widget_text {
     background-color: rgba(0, 0, 0, 0.7);
     min-height: 100%;
+    z-index: 1;
     opacity: 0;
-    bottom: auto;
-    z-index: 1; }
+    bottom: 0;
+    overflow: hidden; }
+  .widget .show {
+    opacity: 1;
+    bottom: auto; }
   .widget_inner:hover .widget_text {
     transition: 0.2s; }
 
