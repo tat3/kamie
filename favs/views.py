@@ -135,6 +135,8 @@ def contact(request):
 
 def about(request):
     u"""About usを表示."""
+    res = information(request, 'about')
+    print(res.content)
     return information(request, 'about')
 
 
@@ -167,8 +169,11 @@ def save_tweet(request, tweet_id, confirm=False):
     tweet = twitter.tweet_from_id(tweet_id)
     if tweet == {}:
         return HttpResponseNotFound('<h1>Tweet does not exist.</h1>')
+    if not Fav.objects.filter(tweet_id=tweet_id, user=user) == []:
+        return HttpResponseNotFound('<h1>Tweet is already saved.</h1>')
     fav = Fav(tweet_id=tweet_id, user=user)
-    # if not confirm:
+    if not confirm:
+        return HttpResponseRedirect(reverse('favs:index'))
     #     fav.save()
 
     template = loader.get_template(template_path('save_tweet.html'))

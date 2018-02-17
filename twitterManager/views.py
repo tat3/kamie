@@ -29,6 +29,7 @@ def template_path(name):
 @login_required
 def complete_view(request):
     u"""login後にcallbackされるページ."""
+    print(request.GET.get('next'))
     return HttpResponseRedirect(reverse('favs:index'))
 
     user = UserSocialAuth.objects.get(user_id=request.user.id)
@@ -58,6 +59,6 @@ def logout_view(request):
     logout(request)
     template = loader.get_template(template_path('logout.html'))
     context = {
-        'user': request.user,
+        # 'user': request.user,
     }
     return HttpResponse(template.render(context, request))

@@ -168,3 +168,5 @@ DEBUG = (os.environ.get('PRODUCTION') != 'True')
 # https://warehouse.python.org/project/whitenoise/
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+LOGIN_URL = '/'

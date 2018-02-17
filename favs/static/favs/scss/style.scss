@@ -12,12 +12,29 @@ $breakpoints: (
   }
 }
 
+/* -------- start CSS -------- */
 
 $tw-bg: #E6ECF1;
 $white-bg: #f5f5f5;
-#main {
+
+/* fix footer on the bottom */
+$footer_height: 2em;
+html {
+    min-height: 100%;
+    position: relative;
     background-color: $white-bg;
 }
+body {
+    background-color: $white-bg; // override Bootstrap bg;
+    margin-bottom: $footer_height;
+}
+#footer {
+    bottom: 0;
+    height: $footer_height;
+    position: absolute;
+}
+
+/* ------------------------ */
 
 .widgets {
     list-style: none;
@@ -70,6 +87,7 @@ $tw-blue: #55acee;
     background-color: $tw-blue;
     text-align: center;
     color: #ffffff;
+    width: 100%;
 }
 
 #navbar {

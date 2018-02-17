@@ -24,7 +24,6 @@
         </script>
 
 		<link rel="stylesheet" type="text/css" href="{% static 'favs/css/cssreset-min.css' %}">
-		<link rel="stylesheet" type="text/css" href="{% static 'favs/css/style.css' %}">
 
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -51,6 +50,8 @@
 
         <script src="{% static 'favs/js/main.js' %}"></script>
 
+        <link rel="stylesheet" type="text/css" href="{% static 'favs/css/style.css' %}">
+
 		{% block head %}{% endblock %}
 		<title>{% block title %}{% endblock %} | Kamie Album</title>
 
@@ -58,13 +59,13 @@
 
     <body>
         <div class="container-fluid p-0">
-		{% include 'favs/_header.html' %}
+		  {% include 'favs/_header.html' %}
 
-		<main id="main">
-		    {% block main %}{% endblock %}
-		</main>
+		  <main id="main">
+		      {% block main %}{% endblock %}
+		  </main>
 
-		{% include 'favs/_footer.html' %}
+		  {% include 'favs/_footer.html' %}
         </div> 
     </body>    
 </html>
