@@ -2,13 +2,31 @@
 
 {% block head %}{% endblock %}
 
-{% block title %}Account{% endblock %}
+{% block title %}Show{% endblock %}
 
 {% block main %}
-<div class="article-area">
-    {% for content in contents %}
-        {% include 'favs/_article.html' %}
+{# <p>USER ID: {{ user_id }}</p> #}
+
+{% include 'favs/_pagination.html' with urls=urls %}
+
+<div class="widget_area">
+    <ul class="widgets js-grid">
+    </ul>
+    <ul class="js-grid-backyard">
+    {% for tweet in tweets %}
+        {% if is_pc %}
+            {% include 'favs/_tweet_img.html' %}
+        {% else %}
+            {% include 'favs/_tweet.html' %}
+        {% endif %}
     {% endfor %}
+    </ul>
+</div>
+
+{% include 'favs/_pagination.html' with urls=urls %}
+
+<div class="social-area">
+    {% include 'favs/_twitter_btn.html' %}
 </div>
 
 {% endblock %}

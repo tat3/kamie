@@ -3,7 +3,6 @@ u"""いいねしたツイートを表示する."""
 import os
 
 import json
-import copy
 
 # from django.shortcuts import render
 from django.http import (
@@ -14,7 +13,7 @@ from django.urls import reverse
 from social_django.models import UserSocialAuth
 from . import utils
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from favs.models import Fav
 
 # Create your views here.
@@ -33,7 +32,7 @@ def redirect_favs_root():
     return HttpResponseRedirect(template_path('index.html'))
 
 
-def list(request, page, data):
+def list_items(request, page, data):
     u"""いいねを表示."""
     template = loader.get_template(template_path('show.html'))
 
@@ -41,10 +40,19 @@ def list(request, page, data):
         twitter = utils.TwitterClient()
     else:
         user = UserSocialAuth.objects.get(user_id=request.user.id)
-        user = user.access_token
-        twitter = utils.TwitterClient(user)
+        user_token = user.access_token
+        twitter = utils.TwitterClient(user_token)
 
-    tweets = twitter.add_htmls_embedded(twitter.favlist(data['user_id'], page))
+    if 'method' not in data:
+        return HttpResponseNotFound('<h1>Method was not detected.</h1>')
+
+    if data['method'] == 'like':
+        tweets = twitter.favlist(data['user_id'], page)
+    elif data['method'] == 'fav':
+        favs = Fav.objects.filter(user=user)
+        tweets = [twitter.tweet_from_id(fav.tweet_id) for fav in favs]
+
+    tweets = twitter.add_htmls_embedded(tweets)
     tweets = [item for item in tweets if 'media' in item['entities']]
     # print(tweets[0]['entities']['media'])
 
@@ -59,13 +67,12 @@ def list(request, page, data):
 
     urls = map(lambda p: {'page': p, 'url': page_url(p), 'name': p},
                range(page - 2, page + 3))
-    urls2 = copy.deepcopy(urls)
+    urls = list(urls)
     context = {
         'user': request.user,
         'user_id': data['user_id'],
         'tweets': tweets,
         'urls': urls,
-        'urls2': urls2,
         'page': page,
         'twitter_btn_url': utils.twitter_btn_url(request),
         'is_pc': utils.is_pc(request),
@@ -73,20 +80,22 @@ def list(request, page, data):
     return HttpResponse(template.render(context, request))
 
 
+def top_page(request):
+    u"""ログインしていない場合のトップページ."""
+    return information(request, 'index')
+
+
+@login_required
+@user_passes_test(lambda u: not u.is_superuser)
 def index(request, page=1):
     u"""トップページもしくはユーザーのいいねを表示."""
-    if not request.user.is_anonymous:
-        user = UserSocialAuth.objects.get(user_id=request.user.id).access_token
-        data = {
-            'name': 'index',
-            'user_id': user['user_id'],
-        }
-        return list(request, page, data)
-
-    # loginを強要
-    # return HttpResponseRedirect(reverse('twitterManager:login'))
-
-    return information(request, 'index')
+    user = UserSocialAuth.objects.get(user_id=request.user.id).access_token
+    data = {
+        'name': 'index',
+        'user_id': user['user_id'],
+        'method': 'like',
+    }
+    return list_items(request, page, data)
 
 
 def show(request, screen_name, page=1):
@@ -108,8 +117,9 @@ def show(request, screen_name, page=1):
         'name': 'show',
         'user_id': user_id,
         'screen_name': screen_name,
+        'method': 'like',
     }
-    return list(request, page, data)
+    return list_items(request, page, data)
 
 
 def information(request, name):
@@ -119,12 +129,23 @@ def information(request, name):
     context = {
         'user': request.user,
         'contents': contents,
+        'request': request,
     }
     return HttpResponse(template.render(context, request))
 
 
-def account(request):
-    u"""アカウント情報を表示."""
+@login_required
+@user_passes_test(lambda u: not u.is_superuser)
+def account(request, page=1):
+    u"""このアプリ上でfavしたツイートを表示."""
+    user = UserSocialAuth.objects.get(user_id=request.user.id).access_token
+    data = {
+        'name': 'index',
+        'user_id': user['user_id'],
+        'method': 'fav',
+    }
+    return list_items(request, page, data)
+
     return information(request, 'account')
 
 
@@ -164,17 +185,17 @@ def save_tweet(request, tweet_id, confirm=False):
     u"""ユーザーのお気に入りを登録."""
     tweet_id = str(tweet_id)
 
-    user = UserSocialAuth.objects.get(id=request.user.id)
+    user = UserSocialAuth.objects.get(user_id=request.user.id)
     twitter = utils.TwitterClient(user.access_token)
     tweet = twitter.tweet_from_id(tweet_id)
     if tweet == {}:
         return HttpResponseNotFound('<h1>Tweet does not exist.</h1>')
-    if not Fav.objects.filter(tweet_id=tweet_id, user=user) == []:
+    if not Fav.objects.filter(tweet_id=tweet_id, user=user).count() == 0:
         return HttpResponseNotFound('<h1>Tweet is already saved.</h1>')
     fav = Fav(tweet_id=tweet_id, user=user)
     if not confirm:
+        fav.save()
         return HttpResponseRedirect(reverse('favs:index'))
-    #     fav.save()
 
     template = loader.get_template(template_path('save_tweet.html'))
     contents = [

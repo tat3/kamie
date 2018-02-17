@@ -169,4 +169,4 @@ DEBUG = (os.environ.get('PRODUCTION') != 'True')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-LOGIN_URL = '/'
+LOGIN_URL = '/top/'
