@@ -40,9 +40,15 @@ $(function(){
         }
     };
 
-    $('.widget_text').on({
-        'click': toggleVisible,
+    $('.widget_text.pc').on({
         'mouseover': show_object,
         'mouseout': hide_object,
+        'click': toggleVisible,
+    });
+
+    $('.widget_text.sp').on({
+        //'mouseover': show_object,
+        //'mouseout': hide_object,
+        'click': toggleVisible,
     });
 });

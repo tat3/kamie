@@ -6,7 +6,7 @@ $breakpoints: (
   'xl': 'screen and (max-width: 1199px)',
 ) !default;
 
-@mixin mq($breakpoint: md) {
+@mixin mq($breakpoint: sm) {
   @media #{map-get($breakpoints, $breakpoint)} {
     @content;
   }
@@ -16,6 +16,26 @@ $breakpoints: (
 
 $tw-bg: #E6ECF1;
 $white-bg: #f5f5f5;
+
+.sp {
+    display: none;
+}
+
+@include mq() {
+    .pc {
+        display: none;
+    }
+    .sp {
+        display: block;
+    }
+}
+
+
+.sp {
+    @include mq() {
+        width: 100%;
+    }
+}
 
 /* fix footer on the bottom */
 $footer_height: 2em;
@@ -51,18 +71,10 @@ body {
 
     margin: 0 auto;
 
-    &_inner {
-    }
     /* kill default margin */
     & twitterwidget {
         margin-top: 0 !important;
         margin-bottom: 0 !important;
-    }
-
-    &_img {
-        // width: 100%;
-        // display: block;
-        // margin: 10px 0;
     }
 
     .widget_text {
@@ -74,12 +86,30 @@ body {
         opacity: 0;
         bottom: 0;
         overflow: hidden;
+
+        &_inner {
+            //display: none;
+        }
+
+        .widget_btn {
+            display: none;
+        }
+
+        &.show {
+            opacity: 1;
+            bottom: auto;
+
+            .widget_text_inner {
+                //display: block;
+            }
+
+            .widget_btn {
+                display: block;
+            }
+        }
+
     }
 
-    .show {
-        opacity: 1;
-        bottom: auto;
-    }
 
     &_inner:hover {
         .widget_img {
@@ -234,9 +264,10 @@ $tw-blue: #55acee;
 
 .article {
     width: 600px;
+    max-width: 100%;
     margin: 0 auto 20px auto;
 
-    @include mq() {
-        width: 100%;
-    }
+    // @include mq() {
+    //     width: 100%;
+    // }
 }

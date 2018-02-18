@@ -1,5 +1,18 @@
 /* For media query */
 /* -------- start CSS -------- */
+.sp {
+  display: none; }
+
+@media screen and (max-width: 399px) {
+  .pc {
+    display: none; }
+
+  .sp {
+    display: block; } }
+@media screen and (max-width: 399px) {
+  .sp {
+    width: 100%; } }
+
 /* fix footer on the bottom */
 html {
   min-height: 100%;
@@ -37,9 +50,13 @@ body {
     opacity: 0;
     bottom: 0;
     overflow: hidden; }
-  .widget .show {
-    opacity: 1;
-    bottom: auto; }
+    .widget .widget_text .widget_btn {
+      display: none; }
+    .widget .widget_text.show {
+      opacity: 1;
+      bottom: auto; }
+      .widget .widget_text.show .widget_btn {
+        display: block; }
   .widget_inner:hover .widget_text {
     transition: 0.2s; }
 
@@ -143,9 +160,7 @@ body {
 
 .article {
   width: 600px;
+  max-width: 100%;
   margin: 0 auto 20px auto; }
-  @media screen and (max-width: 767px) {
-    .article {
-      width: 100%; } }
 
 /*# sourceMappingURL=style.css.map */

@@ -2,12 +2,19 @@
 <li class="widget js-grid-item">
     <div class="card widget_inner">
         <img class="card-img js-grid-img widget_img" data-url="{{ url }}" alt="カードの画像">
-        <div class="card-img-overlay widget_text text-white">
+        <div class="card-img-overlay widget_text text-white pc">
             <h5 class="card-title">{{ tweet.user.name}}@{{  tweet.user.screen_name }}</h5>
             <p class="card-text">{{ tweet.text|safe }}</p>
             <p class="card-text"><small>{% created_time tweet.created_at %}</small></p>
-            <a class="btn btn-primary" href="https://twitter.com/{{ tweet.user.screen_name }}/status/{{ tweet.id }}" target="_blank">Twitterで見る</a>
-            <a class="btn btn-success mt-2" href="{% url 'favs:save_tweet_confirm' tweet_id=tweet.id_str %}" target="_blank">お気に入りに登録</a>
+            <a class="btn btn-primary widget_btn" href="https://twitter.com/{{ tweet.user.screen_name }}/status/{{ tweet.id }}" target="_blank">Twitterで見る</a>
+            <a class="btn btn-success mt-2 widget_btn" href="{% url 'favs:save_tweet_confirm' tweet_id=tweet.id_str %}" target="_blank">お気に入りに登録</a>
+        </div>
+        <div class="card-img-overlay widget_text text-white sp">
+            <h5 class="card-title">{{ tweet.user.name}}@{{  tweet.user.screen_name }}</h5>
+            <p class="card-text">{{ tweet.text|safe }}</p>
+            <p class="card-text"><small>{% created_time tweet.created_at %}</small></p>
+            <a class="btn btn-primary widget_btn" href="https://twitter.com/{{ tweet.user.screen_name }}/status/{{ tweet.id }}" target="_blank">Twitterで見る</a>
+            <a class="btn btn-success mt-2 widget_btn" href="{% url 'favs:save_tweet_confirm' tweet_id=tweet.id_str %}" target="_blank">お気に入りに登録</a>
         </div>
     </div>
 </li>
