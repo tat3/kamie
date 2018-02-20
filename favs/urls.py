@@ -12,6 +12,7 @@ urlpatterns = [
     path('<str:screen_name>/show/', views.show, name='show'),
     path('<str:screen_name>/show/<int:page>/', views.show, name='show_page'),
     path('account/', views.account, name="account"),
+    path('account/<int:page>/', views.account, name='account_page'),
     path('contact/', views.contact, name="contact"),
     path('about/', views.about, name="about"),
     path('text/', views.text, name="text"),

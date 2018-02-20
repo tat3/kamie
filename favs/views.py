@@ -2,8 +2,6 @@ u"""いいねしたツイートを表示する."""
 
 import os
 import json
-import datetime
-from pytz import timezone
 
 # from django.shortcuts import render
 from django.http import (
@@ -58,16 +56,16 @@ def list_items(request, page, data, create_page_url):
     tweets = [item for item in tweets if 'media' in item['entities']]
     # print(tweets[0]['entities']['media'])
 
-    # urls = utils.create_paginator(create_page_url, page)
+    url_split = request.build_absolute_uri().split("/")
+    base_url = url_split[0] + '//' + url_split[2]
 
     context = {
         'user': request.user,
         'user_id': data['user_id'],
         'tweets': tweets,
-        # 'urls': urls,
         'create_page_url': create_page_url,
         'page': page,
-        'twitter_btn_url': utils.twitter_btn_url(request),
+        'base_url': base_url,
         'is_pc': utils.is_pc(request),
     }
     return HttpResponse(template.render(context, request))
@@ -84,11 +82,9 @@ def index(request, page=1):
     u"""トップページもしくはユーザーのいいねを表示."""
     user = UserSocialAuth.objects.get(user_id=request.user.id).access_token
     data = {
-        'name': 'index',
         'user_id': user['user_id'],
         'method': 'like',
     }
-
     return list_items(request, page, data,
                       lambda p: reverse('favs:index_page', kwargs={'page': p}))
 
@@ -109,7 +105,6 @@ def show(request, screen_name, page=1):
         return HttpResponseNotFound('<h1>User not found.</h1>')
 
     data = {
-        'name': 'show',
         'user_id': user_id,
         'screen_name': screen_name,
         'method': 'like',
@@ -138,13 +133,13 @@ def account(request, page=1):
     u"""このアプリ上でfavしたツイートを表示."""
     user = UserSocialAuth.objects.get(user_id=request.user.id).access_token
     data = {
-        'name': 'index',
         'user_id': user['user_id'],
         'method': 'fav',
     }
-    return list_items(request, page, data)
-
-    return information(request, 'account')
+    return list_items(request, page, data,
+                      lambda p: reverse('favs:account_page',
+                                        kwargs={'page': p}))
+    # return information(request, 'account')
 
 
 def contact(request):
@@ -212,11 +207,3 @@ def save_tweet(request, tweet_id, confirm=False):
         'tweet_id': tweet_id,
     }
     return HttpResponse(template.render(context, request))
-
-
-@register.simple_tag
-def created_time(created_at):
-    u"""Format datetime string."""
-    dt = datetime.strptime(created_at, '%a %b %d %H:%M:%S +0000 %Y')
-    dt = timezone('Asia/Tokyo').localize(dt)
-    return dt.strftime('%H:%M - %Y年%m月%d日')
