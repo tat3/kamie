@@ -57,11 +57,11 @@ class TwitterClient:
             return []
         return json.loads(res.text)
 
-    def favlist(self, user_id, page=1):
+    def favlist(self, user_id, page=1, count=100):
         u"""対象ユーザーのユーザーのいいね欄を表示."""
         params = {
             'user_id': user_id,
-            'count': 100,
+            'count': count,
             'page': page,
         }
         res = self.session.get(self.urls['favlist'], params=params)
@@ -164,10 +164,10 @@ def is_pc(request):
     from user_agents import parse
     ua_string = request.META['HTTP_USER_AGENT']
     user_agent = parse(ua_string)
-    return True
 
     return not user_agent.is_mobile
 
+    return True
 
 if __name__ == '__main__':
 

@@ -17,7 +17,8 @@
         {% if is_pc %}
             {% include 'favs/_tweet_img.html' %}
         {% else %}
-            {% include 'favs/_tweet.html' %}
+            {#{% include 'favs/_tweet.html' %}#}
+            {% include 'favs/_tweet_img.html' %}
         {% endif %}
     {% endfor %}
     </ul>

@@ -56,7 +56,7 @@ body {
       opacity: 1;
       bottom: auto; }
       .widget .widget_text.show .widget_btn {
-        display: block; }
+        display: inline-block; }
   .widget_inner:hover .widget_text {
     transition: 0.2s; }
 

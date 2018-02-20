@@ -38,12 +38,12 @@ def list_items(request, page, data):
     u"""いいねを表示."""
     template = loader.get_template(template_path('show.html'))
 
-    if request.user.is_anonymous:
-        twitter = utils.TwitterClient()
-    else:
+    user_token = {}
+    if request.user.is_authenticated:
         user = UserSocialAuth.objects.get(user_id=request.user.id)
         user_token = user.access_token
-        twitter = utils.TwitterClient(user_token)
+
+    twitter = utils.TwitterClient(user=user_token)
 
     if 'method' not in data:
         return HttpResponseNotFound('<h1>Method was not detected.</h1>')
