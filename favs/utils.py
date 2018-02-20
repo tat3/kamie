@@ -4,8 +4,9 @@ import os
 import threading
 
 from queue import Queue
-
 from requests_oauthlib import OAuth1Session
+
+# from django.core.paginator import Paginator
 
 
 def merge_two_dicts(a, b):
@@ -166,8 +167,7 @@ def is_pc(request):
     user_agent = parse(ua_string)
 
     return not user_agent.is_mobile
-
-    return True
+    # return True
 
 if __name__ == '__main__':
 

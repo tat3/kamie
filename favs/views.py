@@ -34,7 +34,7 @@ def redirect_favs_root():
     return HttpResponseRedirect(template_path('index.html'))
 
 
-def list_items(request, page, data):
+def list_items(request, page, data, create_page_url):
     u"""いいねを表示."""
     template = loader.get_template(template_path('show.html'))
 
@@ -58,23 +58,14 @@ def list_items(request, page, data):
     tweets = [item for item in tweets if 'media' in item['entities']]
     # print(tweets[0]['entities']['media'])
 
-    def page_url(page):
-        if data['name'] == 'index':
-            return reverse('favs:index_page',
-                           kwargs={'page': max(page, 0)})
-        else:
-            return reverse('favs:show_page',
-                           kwargs={'screen_name': data['screen_name'],
-                                   'page': max(page, 0)})
+    # urls = utils.create_paginator(create_page_url, page)
 
-    urls = map(lambda p: {'page': p, 'url': page_url(p), 'name': p},
-               range(page - 2, page + 3))
-    urls = list(urls)
     context = {
         'user': request.user,
         'user_id': data['user_id'],
         'tweets': tweets,
-        'urls': urls,
+        # 'urls': urls,
+        'create_page_url': create_page_url,
         'page': page,
         'twitter_btn_url': utils.twitter_btn_url(request),
         'is_pc': utils.is_pc(request),
@@ -97,7 +88,9 @@ def index(request, page=1):
         'user_id': user['user_id'],
         'method': 'like',
     }
-    return list_items(request, page, data)
+
+    return list_items(request, page, data,
+                      lambda p: reverse('favs:index_page', kwargs={'page': p}))
 
 
 def show(request, screen_name, page=1):
@@ -121,7 +114,10 @@ def show(request, screen_name, page=1):
         'screen_name': screen_name,
         'method': 'like',
     }
-    return list_items(request, page, data)
+    return list_items(request, page, data,
+                      lambda p: reverse('favs:show_page',
+                                        kwargs={'screen_name': screen_name,
+                                                'page': p}))
 
 
 def information(request, name):
