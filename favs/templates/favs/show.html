@@ -7,7 +7,9 @@
 {% block main %}
 {# <p>USER ID: {{ user_id }}</p> #}
 
-{% include 'favs/_pagination.html' with urls=urls %}
+{% load util_tags %}
+
+{% create_paginator %}
 
 <div class="widget_area">
     <ul class="widgets js-grid">
@@ -24,10 +26,11 @@
     </ul>
 </div>
 
-{% include 'favs/_pagination.html' with urls=urls %}
+{% create_paginator %}
 
 <div class="social-area">
-    {% include 'favs/_twitter_btn.html' %}
+    {% create_tweet_btn %}
+    {#{% include 'favs/_twitter_btn.html' %}#}
 </div>
 
 {% endblock %}
