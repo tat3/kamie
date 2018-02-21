@@ -30,13 +30,6 @@ $white-bg: #f5f5f5;
     }
 }
 
-
-.sp {
-    @include mq() {
-        width: 100%;
-    }
-}
-
 /* fix footer on the bottom */
 $footer_height: 2em;
 html {

@@ -9,10 +9,6 @@
 
   .sp {
     display: block; } }
-@media screen and (max-width: 399px) {
-  .sp {
-    width: 100%; } }
-
 /* fix footer on the bottom */
 html {
   min-height: 100%;
