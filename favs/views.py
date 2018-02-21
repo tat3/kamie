@@ -47,7 +47,10 @@ def list_items(request, page, data, create_page_url):
         return HttpResponseNotFound('<h1>Method was not detected.</h1>')
 
     if data['method'] == 'like':
-        tweets = twitter.favlist(data['user_id'], page)
+        try:
+            tweets = twitter.favlist(data['user_id'], page)
+        except:
+            tweets = {}
     elif data['method'] == 'fav':
         favs = Fav.objects.filter(user=user)
         tweets = [twitter.tweet_from_id(fav.tweet_id) for fav in favs]
@@ -99,10 +102,11 @@ def show(request, screen_name, page=1):
         twitter = utils.TwitterClient(user)
 
     # user_id = '1212759744'
-    user_id = twitter.user_id_from_screen_name(screen_name)
-    if user_id == '':
+    try:
+        user_id = twitter.user_id_from_screen_name(screen_name)
+    except:
         print(twitter.AT, twitter.AS)
-        return HttpResponseNotFound('<h1>User not found.</h1>')
+        return HttpResponseNotFound('<h1>User was not found.</h1>')
 
     data = {
         'user_id': user_id,
@@ -180,16 +184,19 @@ def save_tweet(request, tweet_id, confirm=False):
 
     user = UserSocialAuth.objects.get(user_id=request.user.id)
     twitter = utils.TwitterClient(user.access_token)
-    tweet = twitter.tweet_from_id(tweet_id)
-    if tweet == {}:
+
+    try:
+        tweet = twitter.tweet_from_id(tweet_id)
+    except:
         return HttpResponseNotFound('<h1>Tweet does not exist.</h1>')
+
     if not Fav.objects.filter(tweet_id=tweet_id, user=user).count() == 0:
         return HttpResponseNotFound('<h1>Tweet is already saved.</h1>')
+
     fav = Fav(tweet_id=tweet_id, user=user)
 
     if not confirm:
         fav.save()
-        # return HttpResponseRedirect(reverse('favs:index'))
         return HttpResponse("<script>window.close()</script>")
 
     template = loader.get_template(template_path('save_tweet.html'))

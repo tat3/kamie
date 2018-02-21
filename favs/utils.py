@@ -55,7 +55,7 @@ class TwitterClient:
         u"""ユーザー自身のタイムラインを表示."""
         res = self.session.get(self.urls['timeline'], params={})
         if res.status_code != 200:
-            return []
+            raise Exception()
         return json.loads(res.text)
 
     def favlist(self, user_id, page=1, count=100):
@@ -67,7 +67,7 @@ class TwitterClient:
         }
         res = self.session.get(self.urls['favlist'], params=params)
         if res.status_code != 200:
-            return []
+            raise Exception()
         return json.loads(res.text)
 
     def user_from_screen_name(self, screen_name):
@@ -77,7 +77,7 @@ class TwitterClient:
         }
         res = self.session.get(self.urls['user'], params=params)
         if res.status_code != 200:
-            return {}
+            raise Exception()
         return json.loads(res.text)
 
     def show_tweets(self, tweets):
@@ -93,9 +93,11 @@ class TwitterClient:
 
     def user_id_from_screen_name(self, screen_name):
         u"""ユーザーの@名からユーザーのid_strを返す."""
-        user = self.user_from_screen_name(screen_name)
-        print(user)
-        return user['id_str'] if 'id_str' in user else ''
+        try:
+            user = self.user_from_screen_name(screen_name)
+        except:
+            raise Exception()
+        return user['id_str']
 
     def html_embedded(self, tweet, q):
         u"""Twitter widget用のHTMLを得て、上書きする."""
@@ -142,22 +144,8 @@ class TwitterClient:
         }
         res = self.session.get(self.urls['tweet'], params=params)
         if res.status_code != 200:
-            return {}
+            raise Exception()
         return json.loads(res.text)
-
-
-def twitter_btn_url(request):
-    u"""ツイートボタンを追加するのに必要な情報."""
-    url_split = request.build_absolute_uri().split("/")
-    url = {"scheme": url_split[0], "domain": url_split[2]}
-    d = {
-        "text": "Twitterでいいねした画像ツイートを一覧できるサービス「Kamie Album」",
-        "lang": "ja",
-        "hashtag": "KamieAlbum",
-        "url": "{scheme}//{domain}".format(**url)
-    }
-    param = "hashtags={hashtag}&text={text}&lang={lang}&url={url}".format(**d)
-    return "https://twitter.com/intent/tweet?" + param
 
 
 def is_pc(request):
