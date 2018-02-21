@@ -157,6 +157,17 @@ def is_pc(request):
     return not user_agent.is_mobile
     # return True
 
+
+def ignore_exceptions(func, items):
+    u"""例外を吐かなかったものだけをリスト化して返す."""
+    result = []
+    for item in items:
+        try:
+            result.append(func(item))
+        except:
+            pass
+    return result
+
 if __name__ == '__main__':
 
     user_id = '1212759744'

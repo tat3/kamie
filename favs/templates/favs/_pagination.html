@@ -1,3 +1,4 @@
+{% if paginator_required %}
 <ul class="pagination m-auto">
     {% for u in urls %}
         {% if u.page >= 1 %}
@@ -11,3 +12,4 @@
         {% endif %}
     {% endfor %}
 </ul>
+{% endif %}

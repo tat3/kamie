@@ -27,7 +27,8 @@ def create_paginator(context):
                   "name": str(page)}
                  for page in range(current_page - 2, current_page + 3)
                  if page >= 1]
-    return {"urls": paginator}
+    return {"urls": paginator,
+            "paginator_required": context["paginator_required"]}
 
 
 @register.inclusion_tag("favs/_twitter_btn.html", takes_context=True)

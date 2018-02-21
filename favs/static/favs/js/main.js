@@ -1,12 +1,3 @@
-/*$(window).on('load', function(){
- setTimeout(function(){
-     $('.js-grid').masonry({
-         columnWidth: 160,
-         fitWidth: true,
-     });
- }, 500);
-});*/
-
 $(window).ready(function(){
     const wrap = $('.js-grid');
     const backyard = $('js-grid-backyard');
@@ -18,7 +9,6 @@ $(window).ready(function(){
         elm.onload = function(){
             const item = $(this).parent().parent();
             wrap.append(item);
-            // wrap.masonry('reloadItems').masonry('layout');
             wrap.masonry('appended', item).masonry();
         };
         elm.src = $(elm).data('url');
@@ -47,8 +37,6 @@ $(function(){
     });
 
     $('.widget_text.sp').on({
-        //'mouseover': show_object,
-        //'mouseout': hide_object,
         'click': toggleVisible,
     });
 });
