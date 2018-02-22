@@ -52,8 +52,8 @@ def list_items(request, user_id, page, create_page_url,
         tweets = utils.ignore_exceptions(twitter.tweet_from_id,
                                          [fav.tweet_id for fav in favs])
 
-    tweets = twitter.add_htmls_embedded(tweets)
     tweets = [item for item in tweets if 'media' in item['entities']]
+    tweets = twitter.add_htmls_embedded(tweets)
     # print(tweets[0]['entities']['media'])
 
     url_split = request.build_absolute_uri().split("/")
