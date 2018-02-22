@@ -1,0 +1,6 @@
+{% load util_tags %}
+<h5 class="card-title">{{ tweet.user.name}}@{{  tweet.user.screen_name }}</h5>
+<p class="card-text">{{ tweet.text|safe }}</p>
+<p class="card-text"><small>{% created_time tweet.created_at %}</small></p>
+<a class="btn btn-primary widget_btn" href="https://twitter.com/{{ tweet.user.screen_name }}/status/{{ tweet.id }}" target="_blank">Twitterで見る</a>
+<a class="btn btn-success mt-2 widget_btn" href="{% url 'favs:save_tweet_confirm' tweet_id=tweet.id_str %}" target="_blank">お気に入りに登録</a>

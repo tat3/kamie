@@ -51,8 +51,6 @@ body {
 
 .widgets {
     list-style: none;
-    // width: auto;
-    // max-width: 960px;
     margin: 0 auto;
     padding: 10px 0;
 
@@ -74,15 +72,10 @@ body {
         background-color: rgba(0, 0, 0, 0.7);
         min-height: 100%;
         //display: none;
-        z-index: 1;
 
         opacity: 0;
         bottom: 0;
         overflow: hidden;
-
-        &_inner {
-            //display: none;
-        }
 
         .widget_btn {
             display: none;
@@ -91,10 +84,7 @@ body {
         &.show {
             opacity: 1;
             bottom: auto;
-
-            .widget_text_inner {
-                //display: block;
-            }
+            z-index: 1; /* 文字が次の画像にかぶった時文字を優先するように */
 
             .widget_btn {
                 display: inline-block;
@@ -102,18 +92,6 @@ body {
         }
 
     }
-
-
-    &_inner:hover {
-        .widget_img {
-            // opacity: 0.7;
-        }
-        .widget_text{
-            //opacity: 1;
-            transition: 0.2s;
-        }
-    }
-
 }
 .js-grid-backyard {
     display: none;
@@ -255,8 +233,4 @@ $tw-blue: #55acee;
     width: 600px;
     max-width: 100%;
     margin: 0 auto 20px auto;
-
-    // @include mq() {
-    //     width: 100%;
-    // }
 }
