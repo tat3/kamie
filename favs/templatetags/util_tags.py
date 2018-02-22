@@ -43,3 +43,11 @@ def create_tweet_btn(context):
     param = "hashtags={hashtag}&text={text}&lang={lang}&url={url}".format(**d)
     url = "https://twitter.com/intent/tweet?" + param
     return {"url": url}
+
+
+@register.inclusion_tag("favs/_message.html", takes_context=True)
+def create_flash_message(context):
+    u"""必要に応じてメッセージを表示する."""
+    if "message_required" not in context:
+        context["message_required"] = False
+    return context

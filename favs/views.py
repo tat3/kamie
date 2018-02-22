@@ -68,7 +68,8 @@ def list_items(request, user_id, page, create_page_url,
         'page': page,
         'paginator_required': True,
     })
-    return render(request, template_path('show.html'), context)
+    return context
+    # return render(request, template_path('show.html'), context)
     # return HttpResponse(template.render(context, request))
 
 
@@ -82,11 +83,14 @@ def top_page(request):
 def index(request, page=1):
     u"""トップページもしくはユーザーのいいねを表示."""
     user = UserSocialAuth.objects.get(user_id=request.user.id).access_token
-    return list_items(
+    context = {
+    }
+    context = list_items(
         request, user['user_id'], page,
         lambda p: reverse('favs:index_page', kwargs={'page': p}),
-        'like', {}
+        'like', context
     )
+    return render(request, template_path('show.html'), context)
 
 
 def show(request, screen_name, page=1):
@@ -105,12 +109,15 @@ def show(request, screen_name, page=1):
         print(twitter.AT, twitter.AS)
         return HttpResponseNotFound('<h1>User was not found.</h1>')
 
-    return list_items(
+    context = {
+    }
+    context = list_items(
         request, user_id, page,
         lambda p: reverse('favs:show_page',
                           kwargs={'screen_name': screen_name, 'page': p}),
-        'like', {}
+        'like', context
     )
+    return render(request, template_path('show.html'), context)
 
 
 def information(request, name):
@@ -129,11 +136,26 @@ def information(request, name):
 def account(request, page=1):
     u"""このアプリ上でfavしたツイートを表示."""
     user = UserSocialAuth.objects.get(user_id=request.user.id).access_token
-    return list_items(
+    context = {
+    }
+    context = list_items(
         request, user['user_id'], page,
         lambda p: reverse('favs:account_page', kwargs={'page': p}),
-        'fav', {}
+        'fav', context
     )
+    if context['tweets'] == []:
+        context = list_items(
+            request, user['user_id'], page,
+            lambda p: reverse('favs:account_page', kwargs={'page': p}),
+            'like', context
+        )
+        context['paginator_required'] = False
+        context['message_required'] = True
+        context['messages'] = [
+            {"title": "まだお気に入りが登録されていません",
+             "body": "まずはあなたがいいねしたツイートからいくつかをお気に入り登録してみましょう。"},
+        ]
+    return render(request, template_path('show.html'), context)
     # return information(request, 'account')
 
 

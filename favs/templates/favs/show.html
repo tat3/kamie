@@ -9,8 +9,11 @@
 
 {% load util_tags %}
 
+{% create_flash_message %}
+
 {% create_paginator %}
 
+{% if not tweets|length_is:"0" %}
 <div class="widget_area">
     <ul class="widgets js-grid">
     </ul>
@@ -25,6 +28,7 @@
     {% endfor %}
     </ul>
 </div>
+{% endif %}
 
 {% create_paginator %}
 
