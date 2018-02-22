@@ -90,6 +90,13 @@ def index(request, page=1):
         lambda p: reverse('favs:index_page', kwargs={'page': p}),
         'like', context
     )
+    if context["tweets"] == []:
+        context['message_required'] = True
+        context['messages'] = [
+            {"title": "いいねが見つかりません",
+             "body": "遡れるツイート数の上限かもしれません。前のページに戻ってください。"},
+        ]
+
     return render(request, template_path('show.html'), context)
 
 
@@ -117,6 +124,13 @@ def show(request, screen_name, page=1):
                           kwargs={'screen_name': screen_name, 'page': p}),
         'like', context
     )
+    if context["tweets"] == []:
+        context['message_required'] = True
+        context['messages'] = [
+            {"title": "いいねが見つかりません",
+             "body": "遡れるツイート数の上限かもしれません。前のページに戻ってください。"},
+        ]
+
     return render(request, template_path('show.html'), context)
 
 

@@ -12,4 +12,4 @@ class Fav(models.Model):
 
     def __str__(self):
         u"""tweet_idを.to_strとして返す."""
-        return self.tweet_id
+        return self.user.access_token.user_id
