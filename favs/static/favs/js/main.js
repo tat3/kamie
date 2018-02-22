@@ -36,7 +36,6 @@ $(function(){
         'click': toggleVisible,
     });
 
-    $('.')
     $('.widget_text.sp').on({
         'click': toggleVisible,
     });
