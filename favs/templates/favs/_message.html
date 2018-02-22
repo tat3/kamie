@@ -1,0 +1,7 @@
+{% if message_required %}
+<div class="article-area">
+{% for content in messages %}
+    {% include "favs/_article.html" %}
+{% endfor %}
+</div>
+{% endif %}

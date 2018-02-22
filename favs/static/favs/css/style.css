@@ -99,11 +99,8 @@ body {
   margin: 0;
   padding: 0; }
 
-.log p {
+.link_btn p {
   padding: 20px 0; }
-  .log p a button {
-    background-color: #55acee;
-    border-color: #55acee; }
 
 .arial {
   font-family: arial; }
@@ -152,7 +149,7 @@ body {
       transition: 0.3s; }
 
 .article-area {
-  padding: 20px 0; }
+  padding: 20px 0 0; }
 
 .article {
   width: 600px;
