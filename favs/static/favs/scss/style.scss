@@ -178,13 +178,9 @@ $tw-blue: #55acee;
     padding: 0;
 }
 
-.log {
+.link_btn {
     p {
         padding: 20px 0;
-        & a button {
-            background-color: $tw-blue;
-            border-color: $tw-blue;
-        }
     }
 }
 .arial {

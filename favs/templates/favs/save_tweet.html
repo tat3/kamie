@@ -11,9 +11,12 @@
     {% endfor %}
 </div>
 
-<div class="log">
+<div class="link_btn">
     <p class="text-normal text-center">
-        <a href="{% url 'favs:save_tweet' tweet_id=tweet_id %}"><button type="button" class="btn btn-default btn-primary btn-lg">登録する</button></a>
+        <a href="{% url 'favs:save_tweet' tweet_id=tweet_id %}"><button type="button" class="btn btn-default btn-success btn-lg">登録する</button></a>
+    </p>
+    <p class="text-normal text-center">
+        <button type="button" class="btn btn-default btn-warning btn-lg" onClick="window.close()">もとのページに戻る</button>
     </p>
 </div>
 
