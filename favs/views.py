@@ -52,12 +52,16 @@ def list_items(request, user_id, page, create_page_url,
         except:
             tweets = {}
     elif method == 'fav':
-        favs = Fav.objects.filter(user=user)
+        qs_tweets = Fav.objects.filter(user=user)
         tweets = utils.ignore_exceptions(twitter.tweet_from_id,
-                                         [fav.tweet_id for fav in favs])
+                                         [tw.tweet_id for tw in qs_tweets])
+    elif method == 'like_db':
+        qs_tweets = Like.objects.filter(user=user)
+        tweets = utils.ignore_exceptions(twitter.tweet_from_id,
+                                         [tw.tweet_id for tw in qs_tweets])
 
     tweets = [item for item in tweets if 'media' in item['entities']]
-    tweets = twitter.add_htmls_embedded(tweets)
+    # tweets = twitter.add_htmls_embedded(tweets)
     # print(tweets[0]['entities']['media'])
 
     url_split = request.build_absolute_uri().split("/")
@@ -85,7 +89,7 @@ def top_page(request):
 @login_required
 @not_superuser
 def index(request, page=1):
-    u"""トップページもしくはユーザーのいいねを表示."""
+    u"""ユーザーのいいねをAPIから表示."""
     user = UserSocialAuth.objects.get(user_id=request.user.id).access_token
     context = {
     }
@@ -248,9 +252,8 @@ def save_tweet(request, tweet_id, confirm=False):
 
 @login_required
 @not_superuser
-def record_likes(request):
+def record_likes(user):
     u"""ユーザーのすべてのいいねをDBに記録する."""
-    user = UserSocialAuth.objects.get(user_id=request.user.id)
     twitter = utils.TwitterClient(user=user.access_token)
     user_id = user.access_token["user_id"]
 
@@ -298,3 +301,32 @@ def record_likes(request):
     # DBに記録
     Like.objects.bulk_create(qs_new)
     return HttpResponse(qs_new)
+
+
+@login_required
+@not_superuser
+def index_from_db(request, page=1):
+    u"""ユーザーのいいねをDBから表示."""
+    user = UserSocialAuth.objects.get(user_id=request.user.id)
+    user_at = user.access_token
+    latest = Like.objects.filter(user=user).latest()
+    now = datetime.datetime.now().astimezone(timezone('Asia/Tokyo'))
+    elapsed = now - latest.saved_at
+    if not latest or elapsed > datetime.timedelta(days=30):
+        record_likes(user)
+
+    context = {
+    }
+    context = list_items(
+        request, user_at['user_id'], page,
+        lambda p: reverse('favs:index_page', kwargs={'page': p}),
+        'like_db', context
+    )
+    if context["tweets"] == []:
+        context['message_required'] = True
+        context['messages'] = [
+            {"title": "いいねが見つかりません",
+             "body": "遡れるツイート数の上限かもしれません。前のページに戻ってください。"},
+        ]
+
+    return render(request, template_path('show.html'), context)

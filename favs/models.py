@@ -19,6 +19,7 @@ class BaseTweet(models.Model):
         u"""baseであることを明記."""
 
         abstract = True
+        get_latest_by = "saved_at"
 
 
 class Fav(BaseTweet):
