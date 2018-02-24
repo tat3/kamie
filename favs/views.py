@@ -260,9 +260,9 @@ def record_likes(request):
     if is_test:
         tweets = [
             {"id_str": "2", "text": "hoge",
-             "created_at": "%a %b %d %H:%M:%S +0000 %Y"},
+             "created_at": "Sat Feb 17 12:00:00 +0000 2018"},
             {"id_str": "3", "text": "higi",
-             "created_at": "%a %b %d %H:%M:%S +0000 %Y"},
+             "created_at": "Sun Feb 18 10:00:00 +0000 2018"},
         ]
     else:
         tweets = []
