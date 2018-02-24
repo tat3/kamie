@@ -2,6 +2,8 @@ u"""いいねしたツイートを表示する."""
 
 import os
 import json
+import datetime
+from pytz import timezone
 
 from django.shortcuts import render
 from django.http import (
@@ -13,12 +15,14 @@ from social_django.models import UserSocialAuth
 from . import utils
 
 from django.contrib.auth.decorators import login_required, user_passes_test
-from favs.models import Fav
+from favs.models import Fav, Like
 
 # Create your views here.
 
 app_name = 'favs'
 register = Library()
+
+not_superuser = user_passes_test(lambda u: not u.is_superuser)
 
 
 def template_path(name):
@@ -79,7 +83,7 @@ def top_page(request):
 
 
 @login_required
-@user_passes_test(lambda u: not u.is_superuser)
+@not_superuser
 def index(request, page=1):
     u"""トップページもしくはユーザーのいいねを表示."""
     user = UserSocialAuth.objects.get(user_id=request.user.id).access_token
@@ -146,7 +150,7 @@ def information(request, name):
 
 
 @login_required
-@user_passes_test(lambda u: not u.is_superuser)
+@not_superuser
 def account(request, page=1):
     u"""このアプリ上でfavしたツイートを表示."""
     user = UserSocialAuth.objects.get(user_id=request.user.id).access_token
@@ -240,3 +244,57 @@ def save_tweet(request, tweet_id, confirm=False):
         'tweet_id': tweet_id,
     }
     return render(request, template_path('save_tweet.html'), context)
+
+
+@login_required
+@not_superuser
+def record_likes(request):
+    u"""ユーザーのすべてのいいねをDBに記録する."""
+    user = UserSocialAuth.objects.get(user_id=request.user.id)
+    twitter = utils.TwitterClient(user=user.access_token)
+    user_id = user.access_token["user_id"]
+
+    # 全てのいいねを取得
+    is_test = False
+
+    if is_test:
+        tweets = [
+            {"id_str": "2", "text": "hoge",
+             "created_at": "%a %b %d %H:%M:%S +0000 %Y"},
+            {"id_str": "3", "text": "higi",
+             "created_at": "%a %b %d %H:%M:%S +0000 %Y"},
+        ]
+    else:
+        tweets = []
+        # 多すぎるとlimitationで止まる
+        for page in range(1, 21):
+            try:
+                tweets += twitter.favlist(user_id, page)
+            except:
+                break
+            if tweets == {}:
+                break
+    # 検索用にtweet_idを配列化
+    tweet_ids = [tw["id_str"] for tw in tweets]
+
+    # 登録されてないものを選別
+    qs_saved = Like.objects.filter(
+        user=user,
+        tweet_id__in=tweet_ids)
+    saved_ids = [tw.tweet_id for tw in qs_saved]
+
+    qs_new = []
+    for tw in tweets:
+        if tw["id_str"] not in saved_ids:
+            dt = datetime.datetime.strptime(tw["created_at"],
+                                            '%a %b %d %H:%M:%S +0000 %Y')
+            dt = dt.astimezone(timezone('Asia/Tokyo'))
+            dict_tweet = {"tweet_id": tw["id_str"],
+                          "created_at": dt,
+                          "user": user,
+                          "text": tw["text"]}
+            qs_new.append(Like(**dict_tweet))
+
+    # DBに記録
+    Like.objects.bulk_create(qs_new)
+    return HttpResponse(qs_new)

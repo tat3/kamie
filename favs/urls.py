@@ -21,4 +21,5 @@ urlpatterns = [
          name="save_tweet_confirm"),
     path('save/<int:tweet_id>/', views.save_tweet, name="save_tweet"),
     path('top/', views.top_page, name="top_page"),
+    path('record/', views.record_likes, name="record_likes"),
 ]
