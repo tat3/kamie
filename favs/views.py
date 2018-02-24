@@ -269,31 +269,31 @@ def record_likes(request):
         # 多すぎるとlimitationで止まる
         for page in range(1, 21):
             try:
-                tweets += twitter.favlist(user_id, page)
+                tweets_response = twitter.favlist(user_id, page)
             except:
                 break
-            if tweets == {}:
+            if tweets_response == []:
                 break
+            tweets += tweets_response
+
     # 検索用にtweet_idを配列化
     tweet_ids = [tw["id_str"] for tw in tweets]
 
     # 登録されてないものを選別
     qs_saved = Like.objects.filter(
-        user=user,
-        tweet_id__in=tweet_ids)
+        user=user, tweet_id__in=tweet_ids)
     saved_ids = [tw.tweet_id for tw in qs_saved]
 
-    qs_new = []
-    for tw in tweets:
-        if tw["id_str"] not in saved_ids:
-            dt = datetime.datetime.strptime(tw["created_at"],
-                                            '%a %b %d %H:%M:%S +0000 %Y')
-            dt = dt.astimezone(timezone('Asia/Tokyo'))
-            dict_tweet = {"tweet_id": tw["id_str"],
-                          "created_at": dt,
-                          "user": user,
-                          "text": tw["text"]}
-            qs_new.append(Like(**dict_tweet))
+    def parse_datetime(string):
+        u"""文字列をパースしてTokyo基準のdatetime型に変換する."""
+        dt = datetime.datetime.strptime(string, '%a %b %d %H:%M:%S +0000 %Y')
+        return dt.astimezone(timezone('Asia/Tokyo'))
+
+    qs_new = [Like(tweet_id=tw["id_str"],
+                   created_at=parse_datetime(tw["created_at"]),
+                   user=user,
+                   text=tw["text"]) for tw in tweets
+              if tw["id_str"] not in saved_ids]
 
     # DBに記録
     Like.objects.bulk_create(qs_new)
