@@ -60,8 +60,8 @@ def list_items(request, user_id, page, create_page_url,
                                          [tw.tweet_id for tw in qs_tweets])
     elif method == 'like_db':
         qs_tweets = Like.objects.filter(user=user)
-        p = Paginator(qs_tweets, 200)
-        qs_tweets = p.page(page)
+        p = Paginator(qs_tweets, 100)
+        qs_tweets = p.page(page).object_list
         tweets = utils.ignore_exceptions(twitter.tweet_from_id,
                                          [tw.tweet_id for tw in qs_tweets])
 
