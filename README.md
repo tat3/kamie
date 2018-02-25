@@ -1,10 +1,3 @@
-#Kamie Album
+# Kamie Album
 
-
-#python social auth(PSA)について
-https://qiita.com/bakira/items/175b16e7e5372e007920
-を参考
-
-#方針
-
-
+Web application to watch own favorite pictures in Twittter.
