@@ -13,7 +13,7 @@ from django.template import loader, Library
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage
 
 from social_django.models import UserSocialAuth
 
@@ -61,7 +61,11 @@ def list_items(request, user_id, page, create_page_url,
     elif method == 'like_db':
         qs_tweets = Like.objects.filter(user=user)
         p = Paginator(qs_tweets, 100)
-        qs_tweets = p.page(page).object_list
+        try:
+            qs_tweets = p.page(page).object_list
+        except EmptyPage:
+            qs_tweets = []
+
         tweets = utils.ignore_exceptions(twitter.tweet_from_id,
                                          [tw.tweet_id for tw in qs_tweets])
 
@@ -329,7 +333,7 @@ def index_from_db(request, page=1):
     }
     context = list_items(
         request, user_at['user_id'], page,
-        lambda p: reverse('favs:index_page', kwargs={'page': p}),
+        lambda p: reverse('favs:index_from_db_page', kwargs={'page': p}),
         'like_db', context
     )
     if context["tweets"] == []:

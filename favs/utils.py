@@ -160,13 +160,30 @@ def is_pc(request):
 
 def ignore_exceptions(func, items):
     u"""例外を吐かなかったものだけをリスト化して返す."""
-    result = []
-    for item in items:
+    def carry_out(func, item, q):
+        u"""一つだけ実行する."""
         try:
-            result.append(func(item))
+            q.put(func(item))
         except:
-            pass
+            q.put(None)
+
+    threads = []
+    queues = []
+    for item in items:
+        q = Queue()
+        queues.append(q)
+        th = threading.Thread(target=carry_out, args=(func, item, q))
+        th.start()
+        threads.append(th)
+    result = []
+    for th, q, item in zip(threads, queues, items):
+        th.join()
+        res = q.get()
+        if res:
+            result.append(res)
+    print(len(items))
     return result
+
 
 if __name__ == '__main__':
 
