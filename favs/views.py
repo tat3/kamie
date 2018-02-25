@@ -11,10 +11,12 @@ from django.http import (
 )
 from django.template import loader, Library
 from django.urls import reverse
-from social_django.models import UserSocialAuth
-from . import utils
-
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.exceptions import ObjectDoesNotExist
+
+from social_django.models import UserSocialAuth
+
+from . import utils
 from favs.models import Fav, Like
 
 # Create your views here.
@@ -309,9 +311,14 @@ def index_from_db(request, page=1):
     u"""ユーザーのいいねをDBから表示."""
     user = UserSocialAuth.objects.get(user_id=request.user.id)
     user_at = user.access_token
-    latest = Like.objects.filter(user=user).latest()
-    now = datetime.datetime.now().astimezone(timezone('Asia/Tokyo'))
-    elapsed = now - latest.saved_at
+
+    # likeが登録されていないか古いとDBを更新
+    try:
+        latest = Like.objects.filter(user=user).latest()
+        now = datetime.datetime.now().astimezone(timezone('Asia/Tokyo'))
+        elapsed = now - latest.saved_at
+    except ObjectDoesNotExist:
+        latest = None
     if not latest or elapsed > datetime.timedelta(days=30):
         record_likes(user)
 
