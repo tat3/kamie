@@ -13,6 +13,7 @@ from django.template import loader, Library
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import Paginator
 
 from social_django.models import UserSocialAuth
 
@@ -59,6 +60,8 @@ def list_items(request, user_id, page, create_page_url,
                                          [tw.tweet_id for tw in qs_tweets])
     elif method == 'like_db':
         qs_tweets = Like.objects.filter(user=user)
+        p = Paginator(qs_tweets, 200)
+        qs_tweets = p.page(page)
         tweets = utils.ignore_exceptions(twitter.tweet_from_id,
                                          [tw.tweet_id for tw in qs_tweets])
 
@@ -302,7 +305,7 @@ def record_likes(user):
 
     # DBに記録
     Like.objects.bulk_create(qs_new)
-    return HttpResponse(qs_new)
+    # return HttpResponse(qs_new)
 
 
 @login_required
