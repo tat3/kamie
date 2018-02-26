@@ -203,10 +203,10 @@ if __name__ == '__main__':
     # user_id = user['id_str']
     # twitter.show_user(user)
 
-    tweets = twitter.timeline()
-    # tweets = twitter.favlist(user_id)
+    # tweets = twitter.timeline()
+    tweets = twitter.favlist(user_id)
     # twitter.show_tweets(tweets)
     # tweets = twitter.add_htmls_embedded(tweets)
-    print(tweets[0])
+    print(tweets[0]["favorite_count"])
 
     # print(twitter.issue_request_url())
