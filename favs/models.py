@@ -3,6 +3,8 @@ import json
 
 from django.db import models
 
+from . import utils
+
 
 class BaseTweet(models.Model):
     u"""Tweetモデルのbase class."""
@@ -13,6 +15,7 @@ class BaseTweet(models.Model):
     user = models.ForeignKey('social_django.UserSocialAuth',
                              on_delete=models.CASCADE)
     json = models.CharField(max_length=10000, blank=True)
+    created_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         u"""ツイート内容を返す."""
@@ -24,6 +27,16 @@ class BaseTweet(models.Model):
             return {}
 
         return json.loads(self.json)
+
+    @classmethod
+    def create_item(cls, dic, user):
+        u"""Save item with dict-type data and user data."""
+        tweet = cls(tweet_id=dic["id_str"],
+                    text=dic["text"],
+                    user=user,
+                    json=json.dumps(dic),
+                    created_at=utils.parse_datetime(dic["created_at"]))
+        return tweet
 
     class Meta:
         u"""baseであることを明記."""
@@ -38,5 +51,3 @@ class Fav(BaseTweet):
 
 class Like(BaseTweet):
     u"""ユーザーのいいねを保持."""
-
-    created_at = models.DateTimeField()
