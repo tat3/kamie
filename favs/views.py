@@ -59,15 +59,16 @@ def list_items(request, user_id, page, create_page_url,
         tweets = utils.ignore_exceptions(twitter.tweet_from_id,
                                          [tw.tweet_id for tw in qs_tweets])
     elif method == 'like_db':
-        qs_tweets = Like.objects.filter(user=user)
+        qs_tweets = Like.objects.filter(user=user).order_by("-created_at")
         p = Paginator(qs_tweets, 100)
         try:
             qs_tweets = p.page(page).object_list
         except EmptyPage:
             qs_tweets = []
 
-        tweets = utils.ignore_exceptions(twitter.tweet_from_id,
-                                         [tw.tweet_id for tw in qs_tweets])
+        # tweets = utils.ignore_exceptions(twitter.tweet_from_id,
+        #                                  [tw.tweet_id for tw in qs_tweets])
+        tweets = [tw.to_dict() for tw in qs_tweets]
 
     tweets = [item for item in tweets if 'media' in item['entities']]
     # tweets = twitter.add_htmls_embedded(tweets)
@@ -304,7 +305,8 @@ def record_likes(user):
     qs_new = [Like(tweet_id=tw["id_str"],
                    created_at=parse_datetime(tw["created_at"]),
                    user=user,
-                   text=tw["text"]) for tw in tweets
+                   text=tw["text"],
+                   json=json.dumps(tw)) for tw in tweets
               if tw["id_str"] not in saved_ids]
 
     # DBに記録
