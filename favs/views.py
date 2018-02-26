@@ -53,13 +53,13 @@ def list_items(request, user_id, page, create_page_url,
         try:
             tweets = twitter.favlist(user_id, page)
         except:
-            tweets = {}
+            tweets = []
     elif method == 'like_pop':
         try:
-            tweets = sorted(twitter.favlist(user_id, page),
+            tweets = sorted(twitter.favlist(user_id, page, count=10),
                             key=lambda tw: -tw["favorite_count"])
         except:
-            tweets = {}
+            tweets = []
     elif method == 'fav_db':
         qs_tweets = Fav.objects.filter(user=user).order_by("-created_at")
         p = Paginator(qs_tweets, 100)
