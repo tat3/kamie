@@ -54,6 +54,12 @@ def list_items(request, user_id, page, create_page_url,
             tweets = twitter.favlist(user_id, page)
         except:
             tweets = {}
+    elif method == 'like_pop':
+        try:
+            tweets = sorted(twitter.favlist(user_id, page),
+                            key=lambda tw: -tw["favorite_count"])
+        except:
+            tweets = {}
     elif method == 'fav_db':
         qs_tweets = Fav.objects.filter(user=user).order_by("-created_at")
         p = Paginator(qs_tweets, 100)
@@ -181,7 +187,7 @@ def account(request, page=1):
         context = list_items(
             request, user['user_id'], page,
             lambda p: reverse('favs:account_page', kwargs={'page': p}),
-            'like', context
+            'like_pop', context
         )
         context['paginator_required'] = False
         context['message_required'] = True
@@ -189,6 +195,7 @@ def account(request, page=1):
             {"title": "まだお気に入りが登録されていません",
              "body": "まずはあなたがいいねしたツイートからいくつかをお気に入り登録してみましょう。"},
         ]
+
     return render(request, template_path('show.html'), context)
     # return information(request, 'account')
 
