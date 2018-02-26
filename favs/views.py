@@ -56,8 +56,8 @@ def list_items(request, user_id, page, create_page_url,
             tweets = []
     elif method == 'like_pop':
         try:
-            tweets = sorted(twitter.favlist(user_id, page, count=10),
-                            key=lambda tw: -tw["favorite_count"])
+            tweets = sorted(twitter.favlist(user_id, page, count=200),
+                            key=lambda tw: -tw["favorite_count"])[:10]
         except:
             tweets = []
     elif method == 'fav_db':
