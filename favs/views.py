@@ -307,7 +307,7 @@ def record_likes(user):
 
 @login_required
 @not_superuser
-def index_from_db(request, page=1):
+def record(request, page=1):
     u"""ユーザーのいいねをDBから表示."""
     user = UserSocialAuth.objects.get(user_id=request.user.id)
     user_at = user.access_token
@@ -326,7 +326,7 @@ def index_from_db(request, page=1):
     }
     context = list_items(
         request, user_at['user_id'], page,
-        lambda p: reverse('favs:index_from_db_page', kwargs={'page': p}),
+        lambda p: reverse('favs:record_page', kwargs={'page': p}),
         'like_db', context
     )
     if context["tweets"] == []:

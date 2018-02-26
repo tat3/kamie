@@ -9,7 +9,14 @@
     <div class="collapse navbar-collapse" id="Navber">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a href="{% url 'favs:account' %}" class="nav-link white"><p class="text-normal">{#{{ user.username }}@{{ user.first_name }}#}Account</p></a>
+                <a href="{% url 'favs:account' %}" class="nav-link white"><p class="text-normal">Favorite</p></a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'favs:record' %}" class="nav-link white"><p class="text-normal">Rocord</p></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link white" href="{% url 'favs:about' %}"><p class="text-normal">About</p></a>
             </li>
             <li class="nav-item">
                 {% if user.is_anonymous %}
@@ -18,12 +25,9 @@
                     <a class="nav-link white" href="{% url 'twitterManager:logout' %}"><p class="text-normal">Logout</p></a>
                 {% endif %}
             </li>
-            <li class="nav-item">
-                <a class="nav-link white" href="{% url 'favs:about' %}"><p class="text-normal">About us</p></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link white" href="{% url 'favs:contact' %}"><p class="text-normal">Contact us</p></a>
-            </li>
+            <!--<li class="nav-item">
+                <a class="nav-link white" href="{% url 'favs:contact' %}"><p class="text-normal">Contact</p></a>
+            </li>-->
 
         </ul>
     </div>
