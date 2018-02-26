@@ -54,10 +54,15 @@ def list_items(request, user_id, page, create_page_url,
             tweets = twitter.favlist(user_id, page)
         except:
             tweets = {}
-    elif method == 'fav':
-        qs_tweets = Fav.objects.filter(user=user)
-        tweets = utils.ignore_exceptions(twitter.tweet_from_id,
-                                         [tw.tweet_id for tw in qs_tweets])
+    elif method == 'fav_db':
+        qs_tweets = Fav.objects.filter(user=user).order_by("-created_at")
+        p = Paginator(qs_tweets, 100)
+        try:
+            qs_tweets = p.page(page).object_list
+        except EmptyPage:
+            qs_tweets = []
+        tweets = [tw.to_dict() for tw in qs_tweets]
+
     elif method == 'like_db':
         qs_tweets = Like.objects.filter(user=user).order_by("-created_at")
         p = Paginator(qs_tweets, 100)
@@ -65,9 +70,6 @@ def list_items(request, user_id, page, create_page_url,
             qs_tweets = p.page(page).object_list
         except EmptyPage:
             qs_tweets = []
-
-        # tweets = utils.ignore_exceptions(twitter.tweet_from_id,
-        #                                  [tw.tweet_id for tw in qs_tweets])
         tweets = [tw.to_dict() for tw in qs_tweets]
 
     tweets = [item for item in tweets if 'media' in item['entities']]
@@ -173,7 +175,7 @@ def account(request, page=1):
     context = list_items(
         request, user['user_id'], page,
         lambda p: reverse('favs:account_page', kwargs={'page': p}),
-        'fav', context
+        'fav_db', context
     )
     if context['tweets'] == []:
         context = list_items(
@@ -238,10 +240,8 @@ def save_tweet(request, tweet_id, confirm=False):
     if not Fav.objects.filter(tweet_id=tweet_id, user=user).count() == 0:
         return HttpResponseNotFound('<h1>Tweet is already saved.</h1>')
 
-    fav = Fav(tweet_id=tweet_id, user=user)
-
     if not confirm:
-        fav.save()
+        Fav.create_item(tweet, user).save()
         return HttpResponse("<script>window.close()</script>")
 
     contents = [
@@ -297,16 +297,7 @@ def record_likes(user):
         user=user, tweet_id__in=tweet_ids)
     saved_ids = [tw.tweet_id for tw in qs_saved]
 
-    def parse_datetime(string):
-        u"""文字列をパースしてTokyo基準のdatetime型に変換する."""
-        dt = datetime.datetime.strptime(string, '%a %b %d %H:%M:%S +0000 %Y')
-        return dt.astimezone(timezone('Asia/Tokyo'))
-
-    qs_new = [Like(tweet_id=tw["id_str"],
-                   created_at=parse_datetime(tw["created_at"]),
-                   user=user,
-                   text=tw["text"],
-                   json=json.dumps(tw)) for tw in tweets
+    qs_new = [Like.create_item(tw, user) for tw in tweets
               if tw["id_str"] not in saved_ids]
 
     # DBに記録

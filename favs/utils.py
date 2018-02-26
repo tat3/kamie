@@ -2,6 +2,8 @@ u"""twitter apiを叩くクライアントを提供する."""
 import json
 import os
 import threading
+import datetime
+from pytz import timezone
 
 from queue import Queue
 from requests_oauthlib import OAuth1Session
@@ -184,6 +186,11 @@ def ignore_exceptions(func, items):
     print(len(items))
     return result
 
+
+def parse_datetime(string):
+    u"""文字列をパースしてTokyo基準のdatetime型に変換する."""
+    dt = datetime.datetime.strptime(string, '%a %b %d %H:%M:%S +0000 %Y')
+    return dt.astimezone(timezone('Asia/Tokyo'))
 
 if __name__ == '__main__':
 
