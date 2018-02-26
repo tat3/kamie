@@ -76,12 +76,13 @@ body {
         opacity: 0;
         bottom: 0;
         overflow: hidden;
-
+        transition: 0.2s;
         .widget_btn {
             display: none;
         }
 
         &.show {
+
             opacity: 1;
             bottom: auto;
             z-index: 1; /* 文字が次の画像にかぶった時文字を優先するように */

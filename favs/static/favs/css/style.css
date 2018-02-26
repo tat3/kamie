@@ -45,7 +45,8 @@ body {
     min-height: 100%;
     opacity: 0;
     bottom: 0;
-    overflow: hidden; }
+    overflow: hidden;
+    transition: 0.2s; }
     .widget .widget_text .widget_btn {
       display: none; }
     .widget .widget_text.show {
