@@ -1,4 +1,6 @@
 """create user model."""
+import json
+
 from django.db import models
 
 
@@ -10,10 +12,18 @@ class BaseTweet(models.Model):
     saved_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey('social_django.UserSocialAuth',
                              on_delete=models.CASCADE)
+    json = models.CharField(max_length=10000, blank=True)
 
     def __str__(self):
         u"""ツイート内容を返す."""
         return self.text
+
+    def to_dict(self):
+        u"""Convert json-text to dict-type object."""
+        if self.json == "":
+            return {}
+
+        return json.loads(self.json)
 
     class Meta:
         u"""baseであることを明記."""
