@@ -7,8 +7,8 @@ from . import views
 app_name = 'favs'
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('<int:page>/', views.index, name='index_page'),
+    path('trial/', views.index, name='index'),
+    path('trail/<int:page>/', views.index, name='index_page'),
     path('<str:screen_name>/show/', views.show, name='show'),
     path('<str:screen_name>/show/<int:page>/', views.show, name='show_page'),
     path('favorite/', views.account, name="account"),
@@ -21,6 +21,6 @@ urlpatterns = [
          name="save_tweet_confirm"),
     path('save/<int:tweet_id>/', views.save_tweet, name="save_tweet"),
     path('top/', views.top_page, name="top_page"),
-    path('record/', views.record, name="record"),
-    path('record/<int:page>/', views.record, name="record_page"),
+    path('', views.record, name="record"),
+    path('<int:page>/', views.record, name="record_page"),
 ]
