@@ -209,8 +209,6 @@ def contact(request):
 
 def about(request):
     u"""About usを表示."""
-    res = information(request, 'about')
-    print(res.content)
     return information(request, 'about')
 
 
