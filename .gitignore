@@ -1,7 +1,8 @@
 .env
-staticfiles/admin/
+staticfiles/*
 *.pyc
 *.pyo
 __pycache__
 .sass-cache
 style.css.map
+!.gitkeep

@@ -1,3 +1,1 @@
-release: python manage.py migrate
-release: python manage.py collectstatic --no-input
-web: gunicorn mysite.wsgi --log-file -
+web: python manage.py migrate; python manage.py collectstatic --no-input; gunicorn mysite.wsgi --log-file -
