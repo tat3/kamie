@@ -287,7 +287,7 @@ def record_likes(user):
     else:
         tweets = []
         # 多すぎるとlimitationで止まる
-        for page in range(1, 21):
+        for page in range(1, 51):
             try:
                 tweets_response = twitter.favlist(user_id, page)
             except:
@@ -326,7 +326,7 @@ def record(request, page=1):
         elapsed = now - latest.saved_at
     except ObjectDoesNotExist:
         latest = None
-    if not latest or elapsed > datetime.timedelta(days=30):
+    if not latest or elapsed > datetime.timedelta(days=1):
         record_likes(user)
 
     context = {
