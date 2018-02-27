@@ -2,5 +2,5 @@
     {"title": "このサービスについて", "body": "このサービスはTwitter APIを叩いてツイートを取得しています。<br>元ツイートが削除されるとこのサービス上でもツイートは見れません。"},
     {"title": "開発者", "body": "このサービスの開発者のアカウントは<a href='https://twitter.com/kamie_album'>@kamie_album</a>です。<br>感想、要望、報告などがあれば<a href='https://twitter.com/kamie_album'>Twitter</a>か<a href='https://docs.google.com/forms/d/e/1FAIpQLSfY2ACAOKSvLfnNISHQg9pG3MST3su9dCErrfJSpbf0bGiISw/viewform?usp=sf_link'>お問い合わせページ</a>から報告をお願いします。"},
     {"title": "Favorite", "body": "このサイト内でお気に入りしたツイートを表示します。"},
-    {"title": "Record", "body": "このサイトにいいねを記録し、TwitterのAPI制限から解放されます。"}
+    {"title": "Trial", "body": "直接APIを叩いてツイートを取得します。確実ですが遅いです。"}
 ]
