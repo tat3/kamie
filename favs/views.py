@@ -11,6 +11,7 @@ from django.http import (
 )
 from django.template import loader, Library
 from django.urls import reverse
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, EmptyPage
@@ -101,6 +102,7 @@ def list_items(request, user_id, page, create_page_url,
 
 def top_page(request):
     u"""ログインしていない場合のトップページ."""
+    logout(request)
     return information(request, 'index')
 
 
