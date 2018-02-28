@@ -2,7 +2,7 @@
 
 {% block head %}{% endblock %}
 
-{% block title %}Save{% endblock %}
+{% block title %}Delete{% endblock %}
 
 {% block main %}
 <div class="article-area">
@@ -13,7 +13,7 @@
 
 <div class="link_btn">
     <p class="text-normal text-center">
-        <a href="{% url 'favs:save_tweet' tweet_id=tweet_id %}"><button type="button" class="btn btn-default btn-success btn-lg">お気に入り登録</button></a>
+        <a href="{% url 'favs:delete_tweet' tweet_id=tweet_id %}"><button type="button" class="btn btn-default btn-danger btn-lg">登録解除</button></a>
     </p>
     <p class="text-normal text-center">
         <button type="button" class="btn btn-default btn-warning btn-lg" onClick="window.close()">元のページに戻る</button>
