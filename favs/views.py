@@ -263,7 +263,7 @@ def save_tweet(request, tweet_id, confirm=False):
     contents = [
         {'title': 'ツイートをお気に入り登録する',
          'body': ('良ければ確認ボタンを押してください。<br>'
-                  'お気に入りしたツイートは<a href="/account/">アカウント画面</a>から確認できます。')},
+                  'お気に入りしたツイートは<a href="/favorite/">お気に入りページ</a>から確認できます。')},
         {'title': '{name}@{screen_name}'.format(
             name=tweet['user']['name'],
             screen_name=tweet['user']['screen_name']),
