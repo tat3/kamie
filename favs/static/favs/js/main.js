@@ -39,4 +39,29 @@ $(function(){
     $('.widget_text.sp').on({
         'click': toggleVisible,
     });
+
+    $('.js-fav').on({
+        'click': function(){
+            const self = $(this);
+            let url = self.data('save');
+            let isSaved = false;
+            if(self.hasClass('js-fav-saved')){
+                url = self.data('delete');
+                isSaved = true;
+            }
+            $.get(url, function(data){
+                isSaved = !isSaved;
+                if(isSaved){
+                    self.removeClass('btn-success js-fav-unsaved');
+                    self.addClass('btn-danger js-fav-saved');
+                    self.text('お気に入り解除');
+                }else{
+                    self.removeClass('btn-danger js-fav-saved');
+                    self.addClass('btn-success js-fav-unsaved');
+                    self.text('お気に入り登録');
+                }
+            });
+
+        }
+    });
 });
