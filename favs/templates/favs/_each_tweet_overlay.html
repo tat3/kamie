@@ -2,5 +2,9 @@
 <h5 class="card-title">{{ tweet.user.name}}@{{  tweet.user.screen_name }}</h5>
 <p class="card-text">{{ tweet.text|safe }}</p>
 <p class="card-text"><small>{% created_time tweet.created_at %}</small></p>
+<div>
 <a class="btn btn-primary widget_btn" href="https://twitter.com/{{ tweet.user.screen_name }}/status/{{ tweet.id }}" target="_blank">Twitterで見る</a>
+</div>
+<div>
 <a class="btn mt-2 widget_btn js-fav {{ tweet.faved|yesno:'btn-danger js-fav-saved,btn-success js-fav-unsaved' }}" data-save="{% url 'favs:save_tweet' tweet_id=tweet.id_str %}" data-delete="{% url 'favs:delete_tweet' tweet_id=tweet.id_str %}" target="_blank">{{ tweet.faved|yesno:'お気に入り解除,お気に入り登録' }}</a>
+</div>

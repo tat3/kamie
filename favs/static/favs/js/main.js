@@ -43,24 +43,26 @@ $(function(){
     $('.js-fav').on({
         'click': function(){
             const self = $(this);
+            // Get current state
             let url = self.data('save');
             let isSaved = false;
             if(self.hasClass('js-fav-saved')){
                 url = self.data('delete');
                 isSaved = true;
             }
-            $.get(url, function(data){
-                isSaved = !isSaved;
-                if(isSaved){
-                    self.removeClass('btn-success js-fav-unsaved');
-                    self.addClass('btn-danger js-fav-saved');
-                    self.text('お気に入り解除');
-                }else{
-                    self.removeClass('btn-danger js-fav-saved');
-                    self.addClass('btn-success js-fav-unsaved');
-                    self.text('お気に入り登録');
-                }
-            });
+            // Switch state from save to unsaved or from unsaved to saved
+            isSaved = !isSaved;
+            if(isSaved){
+                self.removeClass('btn-success js-fav-unsaved');
+                self.addClass('btn-danger js-fav-saved');
+                self.text('お気に入り解除');
+            }else{
+                self.removeClass('btn-danger js-fav-saved');
+                self.addClass('btn-success js-fav-unsaved');
+                self.text('お気に入り登録');
+            }
+            // GET request to database server
+            $.get(url);
 
         }
     });
