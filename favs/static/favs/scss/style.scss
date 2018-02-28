@@ -68,29 +68,33 @@ body {
         margin-bottom: 0 !important;
     }
 
+    .js-fav-border {
+        box-shadow: 0 0 4px 4px #dd9dbf;
+    }
+
     .widget_text {
         background-color: rgba(0, 0, 0, 0.7);
         min-height: 100%;
+        border-radius: 3px;
         //display: none;
 
         opacity: 0;
         bottom: 0;
         overflow: hidden;
-        transition: 0.2s;
+        transition: all 0.2s;
         .widget_btn {
             display: none;
         }
 
         &.show {
-
             opacity: 1;
             bottom: auto;
             z-index: 1; /* 文字が次の画像にかぶった時文字を優先するように */
 
             .widget_btn {
-                display: inline-block;
-            }
+            display: inline-block;
         }
+    }
 
     }
 }

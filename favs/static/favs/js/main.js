@@ -37,12 +37,14 @@ $(function(){
     });
 
     $('.widget_text.sp').on({
+        //'mouseover': show_object,
         'click': toggleVisible,
     });
 
     $('.js-fav').on({
         'click': function(){
             const self = $(this);
+            const widget = $(this).parent().parent().parent();
             // Get current state
             let url = self.data('save');
             let isSaved = false;
@@ -56,10 +58,12 @@ $(function(){
                 self.removeClass('btn-success js-fav-unsaved');
                 self.addClass('btn-danger js-fav-saved');
                 self.text('お気に入り解除');
+                widget.addClass('js-fav-border');
             }else{
                 self.removeClass('btn-danger js-fav-saved');
                 self.addClass('btn-success js-fav-unsaved');
                 self.text('お気に入り登録');
+                widget.removeClass('js-fav-border');
             }
             // GET request to database server
             $.get(url);

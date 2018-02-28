@@ -40,13 +40,16 @@ body {
   .widget twitterwidget {
     margin-top: 0 !important;
     margin-bottom: 0 !important; }
+  .widget .js-fav-border {
+    box-shadow: 0 0 4px 4px #dd9dbf; }
   .widget .widget_text {
     background-color: rgba(0, 0, 0, 0.7);
     min-height: 100%;
+    border-radius: 3px;
     opacity: 0;
     bottom: 0;
     overflow: hidden;
-    transition: 0.2s; }
+    transition: all 0.2s; }
     .widget .widget_text .widget_btn {
       display: none; }
     .widget .widget_text.show {
