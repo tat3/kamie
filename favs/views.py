@@ -80,6 +80,14 @@ def list_items(request, user_id, page, create_page_url,
         tweets = [tw.to_dict() for tw in qs_tweets]
 
     tweets = [item for item in tweets if 'media' in item['entities']]
+
+    # Fav登録されているものを探す
+    tweet_ids = [item["id_str"] for item in tweets]
+    qs_faved = Fav.objects.filter(tweet_id__in=tweet_ids)
+    faved_ids = [item.tweet_id for item in qs_faved]
+    tweets = [utils.merge_two_dicts(item,
+                                    {"faved": item["id_str"] in faved_ids})
+              for item in tweets]
     # tweets = twitter.add_htmls_embedded(tweets)
     # print(tweets[0]['entities']['media'])
 
@@ -244,7 +252,8 @@ def save_tweet(request, tweet_id, confirm=False):
     except:
         return HttpResponseNotFound('<h1>Tweet does not exist.</h1>')
 
-    if not Fav.objects.filter(tweet_id=tweet_id, user=user).count() == 0:
+    qs_tweets = Fav.objects.filter(tweet_id=tweet_id, user=user)
+    if qs_tweets.exists():
         return HttpResponseNotFound('<h1>Tweet is already saved.</h1>')
 
     if not confirm:
@@ -344,3 +353,45 @@ def record(request, page=1):
         ]
 
     return render(request, template_path('show.html'), context)
+
+
+@login_required
+def delete_tweet_confirm(request, tweet_id):
+    u"""ユーザーのお気に入り解除を確認."""
+    return delete_tweet(request, tweet_id, confirm=True)
+
+
+@login_required
+def delete_tweet(request, tweet_id, confirm=False):
+    u"""ユーザーのお気に入りを解除."""
+    tweet_id = str(tweet_id)
+
+    user = UserSocialAuth.objects.get(user_id=request.user.id)
+    twitter = utils.TwitterClient(user.access_token)
+
+    try:
+        tweet = twitter.tweet_from_id(tweet_id)
+    except:
+        return HttpResponseNotFound('<h1>Tweet does not exist.</h1>')
+
+    qs_tweets = Fav.objects.filter(tweet_id=tweet_id, user=user)
+    if not qs_tweets.exists():
+        return HttpResponseNotFound('<h1>Tweet is not saved currently.</h1>')
+
+    if not confirm:
+        qs_tweets.delete()
+        return HttpResponse("<script>window.close()</script>")
+
+    contents = [
+        {'title': 'ツイートのお気に入りを解除する。',
+         'body': '良ければ確認ボタンを押してください。'},
+        {'title': '{name}@{screen_name}'.format(
+            name=tweet['user']['name'],
+            screen_name=tweet['user']['screen_name']),
+         'body': tweet['text']},
+    ]
+    context = {
+        'contents': contents,
+        'tweet_id': tweet_id,
+    }
+    return render(request, template_path('delete_tweet.html'), context)

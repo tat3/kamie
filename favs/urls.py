@@ -23,4 +23,7 @@ urlpatterns = [
     path('top/', views.top_page, name="top_page"),
     path('', views.record, name="record"),
     path('<int:page>/', views.record, name="record_page"),
+    path('delete/confirm/<int:tweet_id>/', views.delete_tweet_confirm,
+         name="delete_tweet_confirm"),
+    path('delete/<int:tweet_id>/', views.delete_tweet, name="delete_tweet"),
 ]
