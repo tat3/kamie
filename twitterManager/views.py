@@ -29,17 +29,8 @@ def template_path(name):
 @login_required
 def complete_view(request):
     u"""login後にcallbackされるページ."""
-    print(request.GET.get('next'))
-    return HttpResponseRedirect(reverse('favs:index'))
-
-    user = UserSocialAuth.objects.get(user_id=request.user.id)
-    page_dic = {
-        'user': user,
-        'userid': request.user.id,
-        'username': request.user.username,
-        'first_name': request.user.first_name,
-    }
-    return render(request, template_path('complete.html'), page_dic)
+    return HttpResponse('<script>window.location.href="/"</script>')
+    # return HttpResponseRedirect(reverse('favs:index'))
 
 
 def login_view(request):
